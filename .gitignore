@@ -1,7 +1,9 @@
-﻿################################################################################
+################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
 /Arena42/Arena42/bin
 /Arena42/Arena42/obj/Debug
 /Arena42/packages
+Arena42/.vs/Arena42/v15/Server/sqlite3/db.lock
+/Arena42/.vs/Arena42/v15/.suo
