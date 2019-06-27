@@ -233,6 +233,11 @@
     <Compile Include="Models\Tournament.cs" />
     <Compile Include="Models\TournamentResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\EF\Adriana42Context.cs" />
+    <Compile Include="Services\EF\Configuration\MarketMapping.cs" />
+    <Compile Include="Services\EF\Configuration\TournamentResultMapping.cs" />
+    <Compile Include="Services\EF\Configuration\TournamentMapping.cs" />
+    <Compile Include="Services\Repository\Repository.cs" />
     <Compile Include="Services\TournamentService.cs" />
   </ItemGroup>
   <ItemGroup>
