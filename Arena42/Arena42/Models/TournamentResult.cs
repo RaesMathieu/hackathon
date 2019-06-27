@@ -5,8 +5,14 @@ using System.Web;
 
 namespace Arena42.Models
 {
-    public class TournamentResult : Tournament
-    {
-        public List<MarketResult> MarketResults { get; set; }
-    }
+    //public class TournamentResult
+    //{
+    //    public int UserId { get; set; }
+
+    //    public int TournamentId { get; set; }
+
+    //    public int MarketId { get; set; }
+
+    //    public int SelectionId { get; set; }
+    //}
 }

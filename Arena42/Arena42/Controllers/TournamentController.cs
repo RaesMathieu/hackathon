@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Arena42.Services;
+using Arena42.Services.Repository;
 
 namespace Arena42.Controllers
 {
@@ -16,8 +18,27 @@ namespace Arena42.Controllers
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<Tournament>))]
         public IHttpActionResult GetTournanents()
         {
-            List<Tournament> tournamentList = GetTournamentsStub();
-            return Ok(new List<Tournament>(tournamentList));
+            using (var db = new Adriana42Context())
+            {
+                var repository = new Repository<Models.Tournament>(db);
+
+                var tournamentList = repository.All().Select(x => new Tournament
+                {
+                    Description = x.Description,
+                    StartTimeUtc = x.StartTimeUtc,
+                    EndTimeUtc = x.EndTimeUtc,
+                    Name = x.Name,
+                    ImgUrl = x.ImgUrl,
+                    Id = x.Id,
+                    Market = x.Market.Select(y => new Market
+                        {
+                            Id = y.Id,
+                            Name = y.Name,
+                            ImgUrl = y.ImgUrl
+                        })
+                });
+                return Ok(new List<Tournament>(tournamentList));
+            }            
         }
 
         private static List<Tournament> GetTournamentsStub()

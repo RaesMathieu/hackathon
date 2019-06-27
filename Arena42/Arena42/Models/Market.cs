@@ -12,22 +12,24 @@ namespace Arena42.Models
         public string Name { get; set; }
         public string ImgUrl { get; set; }
 
-        public IEnumerable<Selection> Selections { get; set; }
+        public ICollection<Selection> Selections { get; set; }
+
+        public virtual ICollection<Tournament> Tournaments { get; set; }
     }
 
-    public class MarketResult : Market
-    {
-        public int ChosenSelectionId { get; set; }
+    //public class MarketResult : Market
+    //{
+    //    public int ChosenSelectionId { get; set; }
 
-        public int WinningSelectionId { get; set; }
+    //    public int WinningSelectionId { get; set; }
 
 
-        public bool IsWinning { get
-            {
-                return ChosenSelectionId == WinningSelectionId;
-            }
-        }
-    }
+    //    public bool IsWinning { get
+    //        {
+    //            return ChosenSelectionId == WinningSelectionId;
+    //        }
+    //    }
+    //}
 
 
 }

@@ -9,7 +9,7 @@ namespace Arena42.Models
     {
         public int Id { get; set; }
 
-        public string Odds { get; set; }
+        public decimal Odds { get; set; }
 
         public string Name { get; set; }
 
