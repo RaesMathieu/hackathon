@@ -1,0 +1,23 @@
+
+{
+    "Information" : [
+        "This file provides default values for the deployment wizard inside Visual Studio and the AWS Lambda commands added to the .NET Core CLI.",
+        "To learn more about the Lambda commands with the .NET Core CLI execute the following command at the command line in the project root directory.",
+        "dotnet lambda help",
+        "All the command line options for the Lambda command can be specified in this file."
+    ],
+    "profile"     : "Adriana42",
+    "region"      : "eu-west-1",
+    "configuration" : "Debug",
+    "framework"     : "netcoreapp2.1",
+    "function-runtime" : "dotnetcore2.1",
+    "function-memory-size" : 256,
+    "function-timeout"     : 30,
+    "function-handler"     : "AWSLambda2::AWSLambda2.Function::FunctionHandler",
+    "function-name"        : "GetSettlement",
+    "function-role"        : "arn:aws:iam::150879765741:role/service-role/settlement",
+    "tracing-mode"         : "PassThrough",
+    "environment-variables" : "",
+    "function-description"  : "",
+    "dead-letter-target-arn" : "arn:aws:sqs:eu-west-1:150879765741:settlement-deadletter"
+}

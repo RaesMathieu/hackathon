@@ -175,6 +175,12 @@ namespace Arena42.Controllers
             return Ok();
         }
 
+        [Route("api/result/{selectionId}")]
+        public IHttpActionResult Post(int selectionId, bool result)
+        {
+            return Ok();
+        }
+
         private static Market GetMarketStub(int id)
         {
             return new Market
