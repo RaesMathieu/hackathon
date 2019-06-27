@@ -8,12 +8,12 @@ using System.Net.Http;
 using System.Web.Http;
 using Arena42.Services;
 using Arena42.Services.Repository;
+using System.Linq;
 
 namespace Arena42.Controllers
 {
     public class TournamentController : ApiController
     {
-        // GET api/values/5
         [Route("api/tournaments")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<Tournament>))]
         public IHttpActionResult GetTournanents()
@@ -30,38 +30,22 @@ namespace Arena42.Controllers
                     Name = x.Name,
                     ImgUrl = x.ImgUrl,
                     Id = x.Id,
-                    Market = x.Market.Select(y => new Market
+                    Markets = x.Markets.Select(y => new Market
+                    {
+                        Id = y.Id,
+                        Name = y.Name,
+                        ImgUrl = y.ImgUrl,
+                        Selections = y.Selections.Select(s => new Selection
                         {
-                            Id = y.Id,
-                            Name = y.Name,
-                            ImgUrl = y.ImgUrl
+                            Id = s.Id,
+                            ImgUrl = s.ImgUrl,
+                            Name = s.Name,
+                            Odds = s.Odds.ToString()
                         })
+                    })
                 });
                 return Ok(new List<Tournament>(tournamentList));
-            }            
-        }
-
-        private static List<Tournament> GetTournamentsStub()
-        {
-            return new List<Tournament>
-            {
-                new Tournament
-                {
-                    Id = 1,
-                    Description = "Premier tournoi du betclic hackathon !",
-                    StartTimeUtc = DateTime.UtcNow,
-                    EndTimeUtc = DateTime.UtcNow,
-                    ImgUrl = "http://www.footmercato.net/images/a/benjamin-lecomte-plait-beaucoup-a-monaco_257228.jpg",
-                    Name = "Ligue 1 journée 1",
-                    Market = new List<Market>
-                    {
-                        GetMarketStub(1),
-                        GetMarketStub(2),
-                        GetMarketStub(3),
-                        GetMarketStub(4)
-                    }
-                }
-            };
+            }
         }
 
         //// GET api/values/5
@@ -77,136 +61,123 @@ namespace Arena42.Controllers
         //    });
         //}
 
-        //// GET api/values/5
-        //[Route("api/tournament/{tournamentid}/leaderboard")]
-        //[SwaggerResponse(HttpStatusCode.OK, Type = typeof(LeaderBoard))]
-        //public IHttpActionResult GetLeaderBoardByTournamentId(int tournamentid)
-        //{
-        //    return Ok(new LeaderBoard());²
-        //}
-
         // GET api/values/5
+        [Route("api/tournament/{tournamentid}/leaderboard")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(LeaderBoard))]
+        public IHttpActionResult GetLeaderBoardByTournamentId(int tournamentid)
+        {
+            using (var db = new Adriana42Context())
+            {
+                var tournamentRepository = new Repository<Models.Tournament>(db);
+                var marketRepository = new Repository<Models.Market>(db);
+                var betRepository = new Repository<Models.Bet>(db);
+
+                var bets = betRepository.Find(b => b.TournamentId == tournamentid);
+                return Ok(new LeaderBoard
+                {
+                    TournamentId = tournamentid,
+                    Ranking = bets.GroupBy(b => b.UserId).Select(b => new LeaderBoardRanking
+                    {
+                        UserName = b.Key.ToString(),
+                        Score = b.Count()
+                    }).ToList()
+                });
+            }
+        }
+
         [Route("api/tournament/{tournamentid}/Result")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(TournamentResult))]
-        public IHttpActionResult GetResultByTournamentId(int tournamentid)
+        public IHttpActionResult GetResultByTournamentId(int tournamentId)
         {
-            return Ok(GetTournamentResultStub());
-        }
-
-        private TournamentResult GetTournamentResultStub()
-        {
-            return new TournamentResult
+            using (var db = new Adriana42Context())
             {
-                Id = 1,
-                Description = "Premier tournoi du betclic hackathon !",
-                StartTimeUtc = DateTime.UtcNow,
-                EndTimeUtc = DateTime.UtcNow,
-                ImgUrl = "http://www.footmercato.net/images/a/benjamin-lecomte-plait-beaucoup-a-monaco_257228.jpg",
-                Name = "Ligue 1 journée 1",
-                Market = new List<Market>
-                    {
-                        GetMarketStub(1),
-                        GetMarketStub(2),
-                        GetMarketStub(3),
-                        GetMarketStub(4)
-                    },
-                MarketResults = new List<MarketResult>
+                var tournamentRepository = new Repository<Models.Tournament>(db);
+                var marketRepository = new Repository<Models.Market>(db);
+                var betRepository = new Repository<Models.Bet>(db);
+                var bets = betRepository.Find(b => b.TournamentId == tournamentId);
+                var tournament = tournamentRepository.GetById(t => t.Id == tournamentId);
+                if (tournament == null)
+                    return NotFound();
+
+                var tournamentResult = new TournamentResult
                 {
-                    new MarketResult
+                    Id = tournament.Id,
+                    Description = tournament.Description,
+                    StartTimeUtc = tournament.StartTimeUtc,
+                    EndTimeUtc = tournament.EndTimeUtc,
+                    ImgUrl = tournament.ImgUrl,
+                    Name = tournament.Name
+                };
+
+                tournamentResult.MarketResults = bets.Select(b => new MarketResult
+                {
+                    MarketId = b.MarketId,
+                    ChosenSelectionId = b.SelectionId
+                }).ToList();
+                tournamentResult.MarketResults.ForEach(x =>
+                {
+                    var market = marketRepository.GetById(x.MarketId);
+                    if (market != null)
                     {
-                        BetclicMarketId = "1",
-                        Id = 1,
-                        ImgUrl = "https://image.freepik.com/psd-gratuit/conception-fond-resume_1297-82.jpg",
-                        Name = "Match winner",
-                        Selections = new List<Selection>
+                        x.Selections = market.Selections?.Select(s => new Selection
                         {
-                            new Selection
-                            {
-                                Id = 2,
-                                ImgUrl = "https://upload.wikimedia.org/wikipedia/fr/thumb/8/86/Paris_Saint-Germain_Logo.svg/1024px-Paris_Saint-Germain_Logo.svg.png",
-                                Name = "PSG",
-                                Odds = "2"
-                            },
-                            new Selection
-                            {
-                                Id = 4,
-                                ImgUrl = "https://upload.wikimedia.org/wikipedia/fr/4/43/Logo_Olympique_de_Marseille.svg",
-                                Name = "OM",
-                                Odds = "3"
-                            },
-                        },
-                        ChosenSelectionId = 2,
-                        WinningSelectionId = 4
-                    },
-                    new MarketResult
-                    {
-                        BetclicMarketId = "2",
-                        Id = 2,
-                        ImgUrl = "https://image.freepik.com/psd-gratuit/conception-fond-resume_1297-82.jpg",
-                        Name = "Match winner",
-                        Selections = new List<Selection>
-                        {
-                            new Selection
-                            {
-                                Id = 6,
-                                ImgUrl = "https://upload.wikimedia.org/wikipedia/fr/thumb/8/86/Paris_Saint-Germain_Logo.svg/1024px-Paris_Saint-Germain_Logo.svg.png",
-                                Name = "PSG",
-                                Odds = "2"
-                            },
-                            new Selection
-                            {
-                                Id = 8,
-                                ImgUrl = "https://upload.wikimedia.org/wikipedia/fr/4/43/Logo_Olympique_de_Marseille.svg",
-                                Name = "OM",
-                                Odds = "3"
-                            },
-                        },
-                        ChosenSelectionId = 6,
-                        WinningSelectionId = 6
-                    }
-                }
-            };
+                            Id = s.Id,
+                            ImgUrl = s.ImgUrl,
+                            Name = s.Name,
+                            Odds = s.Odds.ToString(),
+                            Result = s.Result
+                        });
+                        x.WinningSelectionId = x.Selections.FirstOrDefault(s => s.Result == true)?.Id;
+                        x.Name = market.Name;
+                        x.ImgUrl = market.ImgUrl;
+                    };
+                });
+
+                return Ok(tournamentResult);
+            }
         }
 
-        // POST api/values
         [Route("api/tournament/{tournamentid}/market/{marketid}/selection/{selectionid}")]
-        public IHttpActionResult Post(int tournamentId, int marketId, int selectionId)
+        [HttpPost]
+        public IHttpActionResult Bet(int tournamentId, int marketId, int selectionId)
         {
-            return Ok();
+            using (var db = new Adriana42Context())
+            {
+                var repository = new Repository<Models.Bet>(db);
+                var bet = new Models.Bet
+                {
+                    Date = DateTime.UtcNow,
+                    TournamentId = tournamentId,
+                    MarketId = marketId,
+                    SelectionId = selectionId,
+                    UserId = 1
+                };
+                repository.Add(bet);
+                db.SaveChanges();
+                return Ok();
+            }
         }
 
         [Route("api/result/{selectionId}")]
-        public IHttpActionResult Post(int selectionId, bool result)
+        [HttpPut]
+        public IHttpActionResult Put(int selectionId, bool result)
         {
-            return Ok();
-        }
-
-        private static Market GetMarketStub(int id)
-        {
-            return new Market
+            using (var db = new Adriana42Context())
             {
-                BetclicMarketId = id.ToString(),
-                Id = id,
-                Name = "Match winner",
-                ImgUrl = "https://image.freepik.com/psd-gratuit/conception-fond-resume_1297-82.jpg",
-                Selections = new List<Selection>
-                {
-                    new Selection
-                    {
-                        Id = id * 2,
-                        ImgUrl = "https://upload.wikimedia.org/wikipedia/fr/thumb/8/86/Paris_Saint-Germain_Logo.svg/1024px-Paris_Saint-Germain_Logo.svg.png",
-                        Name = "PSG",
-                        Odds = "2"
-                    },
-                    new Selection
-                    {
-                        Id = id * 2,
-                        ImgUrl = "https://upload.wikimedia.org/wikipedia/fr/4/43/Logo_Olympique_de_Marseille.svg",
-                        Name = "OM",
-                        Odds = "3"
-                    },
-                }
-            };
+                var selectionsRepository = new Repository<Models.Selection>(db);
+                var selection = selectionsRepository.GetById(selectionId);
+                if (selection == null)
+                    return NotFound();
+                selection.Result = result;
+
+                var repository = new Repository<Models.Bet>(db);
+                var bets = repository.Find(b => b.SelectionId == selectionId);
+                bets.All(b => b.Result = result);
+
+                db.SaveChanges();
+
+                return Ok();
+            }
         }
     }
 }

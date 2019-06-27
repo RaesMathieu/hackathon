@@ -12,7 +12,7 @@ namespace Arena42.Models
         public string Description { get; set; }
         public string ImgUrl { get; set; }
 
-        public virtual ICollection<Market> Market { get; set; }
+        public virtual ICollection<Market> Markets { get; set; }
         public DateTime StartTimeUtc { get; set; }
         public DateTime EndTimeUtc { get; set; }
     }

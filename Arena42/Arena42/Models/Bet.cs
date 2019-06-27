@@ -13,5 +13,7 @@ namespace Arena42.Models
         public int TournamentId { get; set; }
         public int MarketId { get; set; }
         public int SelectionId { get; set; }
+        public bool Result { get; set; }
+        public int UserId { get; set; }
     }
 }

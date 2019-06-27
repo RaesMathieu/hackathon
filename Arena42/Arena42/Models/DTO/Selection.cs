@@ -15,5 +15,7 @@ namespace Arena42.Models.DTO
 
         public string ImgUrl { get; set; }
 
+        public bool? Result { get; set; }
+
     }
 }

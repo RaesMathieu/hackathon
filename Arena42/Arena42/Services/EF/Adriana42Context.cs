@@ -38,7 +38,8 @@ namespace Arena42.Services
 
             modelBuilder.Configurations.Add(new TournamentMapping());
             modelBuilder.Configurations.Add(new MarketMapping());
-
+            modelBuilder.Configurations.Add(new BetMapping());
+            modelBuilder.Configurations.Add(new SelectionMapping());
 
             // modelBuilder.Configurations.Add(new TournamentResultMapping());
 

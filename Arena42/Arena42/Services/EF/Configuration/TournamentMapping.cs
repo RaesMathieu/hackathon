@@ -22,7 +22,7 @@ namespace Arena42.Services.EF.Configuration
             Property(g => g.Name).IsRequired();
 
             //Ignore(x => x.Market);
-            HasMany(x => x.Market)
+            HasMany(x => x.Markets)
                 .WithMany(y => y.Tournaments)
                 .Map(x =>
                 {

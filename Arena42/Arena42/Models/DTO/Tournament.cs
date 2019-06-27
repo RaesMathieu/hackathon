@@ -12,7 +12,7 @@ namespace Arena42.Models.DTO
         public string Description { get; set; }
         public string ImgUrl { get; set; }
 
-        public IEnumerable<Market> Market { get; set; }
+        public IEnumerable<Market> Markets { get; set; }
         public DateTime StartTimeUtc { get; set; }
         public DateTime EndTimeUtc { get; set; }
     }

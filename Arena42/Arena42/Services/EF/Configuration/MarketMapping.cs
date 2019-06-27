@@ -18,10 +18,8 @@ namespace Arena42.Services.EF.Configuration
             Property(g => g.ImgUrl).IsRequired();
             Property(g => g.Name).IsRequired();
 
-            Ignore(x => x.Selections);
-
             HasMany(x => x.Tournaments)
-                .WithMany(y => y.Market)
+                .WithMany(y => y.Markets)
                 .Map(x =>
                 {
                     x.MapRightKey("TournamentId");
@@ -29,9 +27,8 @@ namespace Arena42.Services.EF.Configuration
                     x.ToTable("TournamentMarket");
                 });
 
-            //HasOptional(g => g.ParentGame)
-            //    .WithMany(a => a.Rounds)
-            //    .HasForeignKey(x => x.ParentGameId);
+            HasMany(x => x.Selections);
+            
         }
     }
 }
