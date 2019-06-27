@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Arena42/Arena42/bin
+/Arena42/Arena42/obj/Debug
+/Arena42/packages
