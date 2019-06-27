@@ -17,14 +17,14 @@ namespace Arena42.Models
 
     public class MarketResult : Market
     {
-        public int ChoosenSelectionId { get; }
+        public int ChosenSelectionId { get; set; }
 
-        public int WinSelectionId { get; }
+        public int WinningSelectionId { get; set; }
 
 
         public bool IsWinning { get
             {
-                return ChoosenSelectionId == WinSelectionId;
+                return ChosenSelectionId == WinningSelectionId;
             }
         }
     }

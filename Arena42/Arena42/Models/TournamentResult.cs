@@ -7,6 +7,6 @@ namespace Arena42.Models
 {
     public class TournamentResult : Tournament
     {
-        public List<MarketResult> MarketResult { get; set; }
+        public List<MarketResult> MarketResults { get; set; }
     }
 }
