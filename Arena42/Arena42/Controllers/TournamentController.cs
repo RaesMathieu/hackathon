@@ -1,4 +1,4 @@
-﻿using Arena42.Models;
+﻿using Arena42.Models.DTO;
 using Swashbuckle.Swagger.Annotations;
 using System;
 using System.Collections.Generic;
