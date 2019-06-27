@@ -220,6 +220,7 @@
     </Compile>
     <Compile Include="Models\Bet.cs" />
     <Compile Include="Models\DTO\Bet.cs" />
+    <Compile Include="Models\DTO\ResultRequest.cs" />
     <Compile Include="Models\DTO\TournamentResult.cs" />
     <Compile Include="Models\DTO\LeaderBoardRanking.cs" />
     <Compile Include="Models\DTO\LeaderBoard.cs" />

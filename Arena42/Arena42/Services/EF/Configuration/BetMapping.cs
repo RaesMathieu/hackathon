@@ -20,6 +20,7 @@ namespace Arena42.Services.EF.Configuration
             Property(g => g.MarketId).IsRequired();
             Property(g => g.SelectionId).IsRequired();
             Property(g => g.UserId).IsRequired();
+            Property(g => g.Result);
         }
     }
 }

@@ -158,21 +158,21 @@ namespace Arena42.Controllers
             }
         }
 
-        [Route("api/result/{selectionId}")]
+        [Route("api/result")]
         [HttpPut]
-        public IHttpActionResult Put(int selectionId, bool result)
+        public IHttpActionResult Put([FromBody]ResultRequest request)
         {
             using (var db = new Adriana42Context())
             {
                 var selectionsRepository = new Repository<Models.Selection>(db);
-                var selection = selectionsRepository.GetById(selectionId);
+                var selection = selectionsRepository.GetById(request.SelectionId);
                 if (selection == null)
                     return NotFound();
-                selection.Result = result;
+                selection.Result = request.Result;
 
                 var repository = new Repository<Models.Bet>(db);
-                var bets = repository.Find(b => b.SelectionId == selectionId);
-                bets.All(b => b.Result = result);
+                var bets = repository.Find(b => b.SelectionId == request.SelectionId).ToList();
+                bets.ForEach(b => b.Result = request.Result);
 
                 db.SaveChanges();
 

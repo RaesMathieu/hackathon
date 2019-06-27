@@ -58,8 +58,8 @@ namespace AWSLambda2
                     else if (team.Value.StringValue == "42")
                     {
                         var selection = JsonConvert.DeserializeObject(message.Body);
-                        client.BaseAddress = new Uri("http://adriana42.eu-west-1.elasticbeanstalk.com/api");
-                        var response = await client.PostAsJsonAsync("api/result", selection);
+                        client.BaseAddress = new Uri("http://adriana42.eu-west-1.elasticbeanstalk.com/api/");
+                        var response = await client.PutAsJsonAsync("result", selection);
                         context.Logger.LogLine($"Processed message {message.Body}, http code = " + response.StatusCode.ToString());
                     }
                     else
