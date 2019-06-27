@@ -7,6 +7,7 @@ using Amazon.Lambda.Core;
 using Amazon.Lambda.SQSEvents;
 using Newtonsoft.Json;
 using System.Net.Http;
+using AWSLambda2.Models;
 
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
@@ -57,9 +58,9 @@ namespace AWSLambda2
                     }
                     else if (team.Value.StringValue == "42")
                     {
-                        var selection = JsonConvert.DeserializeObject(message.Body);
+                        var selectionResult = JsonConvert.DeserializeObject<SelectionResult>(message.Body);
                         client.BaseAddress = new Uri("http://adriana42.eu-west-1.elasticbeanstalk.com/api/");
-                        var response = await client.PutAsJsonAsync("result", selection);
+                        var response = await client.PutAsJsonAsync("result", new ResultRequest { Result = selectionResult.Result, SelectionId = selectionResult.SelectionId });
                         context.Logger.LogLine($"Processed message {message.Body}, http code = " + response.StatusCode.ToString());
                     }
                     else
