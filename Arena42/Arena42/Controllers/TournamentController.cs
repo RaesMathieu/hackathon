@@ -137,6 +137,11 @@ namespace Arena42.Controllers
             }
         }
 
+        public int UserId
+        {
+            get { return int.Parse(this.Request.Headers.GetValues("X-CLIENT").FirstOrDefault()); }
+        }
+
         [Route("api/tournament/{tournamentid}/market/{marketid}/selection/{selectionid}")]
         [HttpPost]
         public IHttpActionResult Bet(int tournamentId, int marketId, int selectionId)
@@ -150,7 +155,7 @@ namespace Arena42.Controllers
                     TournamentId = tournamentId,
                     MarketId = marketId,
                     SelectionId = selectionId,
-                    UserId = 1
+                    UserId = UserId
                 };
                 repository.Add(bet);
                 db.SaveChanges();
