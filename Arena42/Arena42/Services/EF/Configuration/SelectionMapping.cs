@@ -20,6 +20,8 @@ namespace Arena42.Services.EF.Configuration
             Property(g => g.Odds).IsRequired();
             Property(g => g.MarketId).IsRequired();
             Property(g => g.Result);
+
+            HasMany(x => x.Bet);
         }
     }
 }

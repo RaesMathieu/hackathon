@@ -13,6 +13,9 @@ namespace Arena42.Models
         public string ImgUrl { get; set; }
 
         public virtual ICollection<Market> Markets { get; set; }
+
+        public virtual  ICollection<Bet> Bet { get; set; }
+
         public DateTime StartTimeUtc { get; set; }
         public DateTime EndTimeUtc { get; set; }
     }

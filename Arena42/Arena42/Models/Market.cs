@@ -14,6 +14,8 @@ namespace Arena42.Models
         public virtual ICollection<Selection> Selections { get; set; }
 
         public virtual ICollection<Tournament> Tournaments { get; set; }
+
+        public virtual ICollection<Bet> Bet { get; set; }
     }
 
 

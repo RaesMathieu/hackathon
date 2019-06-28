@@ -16,22 +16,13 @@ namespace Arena42.Models.DTO
 
     public class MarketResult
     {
-        public int MarketId { get; set; }
-        public string Name { get; set; }
-        public string ImgUrl { get; set; }
+        public Market Market { get; set; }
 
-        public IEnumerable<Selection> Selections { get; set; }
+        public Selection ChosenSelection { get; set; }
 
-        public int ChosenSelectionId { get; set; }
+        public Selection WinningSelection { get; set; }
 
-        public int? WinningSelectionId { get; set; }
-
-
-        public bool IsWinning { get
-            {
-                return ChosenSelectionId == WinningSelectionId;
-            }
-        }
+        public bool IsWinning => ChosenSelection != null && WinningSelection != null && ChosenSelection.Id == WinningSelection.Id;
     }
 
 

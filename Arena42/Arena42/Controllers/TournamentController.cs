@@ -66,75 +66,77 @@ namespace Arena42.Controllers
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(LeaderBoard))]
         public IHttpActionResult GetLeaderBoardByTournamentId(int tournamentid)
         {
-            using (var db = new Adriana42Context())
-            {
-                var tournamentRepository = new Repository<Models.Tournament>(db);
-                var marketRepository = new Repository<Models.Market>(db);
-                var betRepository = new Repository<Models.Bet>(db);
+            throw new NotImplementedException();
+            //using (var db = new Adriana42Context())
+            //{
+            //    var tournamentRepository = new Repository<Models.Tournament>(db);
+            //    var marketRepository = new Repository<Models.Market>(db);
+            //    var betRepository = new Repository<Models.Bet>(db);
 
-                var bets = betRepository.Find(b => b.TournamentId == tournamentid);
-                return Ok(new LeaderBoard
-                {
-                    TournamentId = tournamentid,
-                    Ranking = bets.GroupBy(b => b.UserId).Select(b => new LeaderBoardRanking
-                    {
-                        UserName = b.Key.ToString(),
-                        Score = b.Count()
-                    }).ToList()
-                });
-            }
+            //    var bets = betRepository.Find(b => b.Tournament.Id == tournamentid);
+            //    return Ok(new LeaderBoard
+            //    {
+            //        TournamentId = tournamentid,
+            //        Ranking = bets.GroupBy(b => b.User.Id).Select(b => new LeaderBoardRanking
+            //        {
+            //            UserName = b.Key.ToString(),
+            //            Score = b.Count()
+            //        }).ToList()
+            //    });
+            //}
         }
 
         [Route("api/tournament/{tournamentid}/Result")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(TournamentResult))]
         public IHttpActionResult GetResultByTournamentId(int tournamentId)
         {
-            using (var db = new Adriana42Context())
-            {
-                var tournamentRepository = new Repository<Models.Tournament>(db);
-                var marketRepository = new Repository<Models.Market>(db);
-                var betRepository = new Repository<Models.Bet>(db);
-                var bets = betRepository.Find(b => b.TournamentId == tournamentId);
-                var tournament = tournamentRepository.GetById(t => t.Id == tournamentId);
-                if (tournament == null)
-                    return NotFound();
+            throw new NotImplementedException();
+            //using (var db = new Adriana42Context())
+            //{
+            //    var tournamentRepository = new Repository<Models.Tournament>(db);
+            //    var marketRepository = new Repository<Models.Market>(db);
+            //    var betRepository = new Repository<Models.Bet>(db);
+            //    var bets = betRepository.Find(b => b.TournamentId == tournamentId);
+            //    var tournament = tournamentRepository.GetById(t => t.Id == tournamentId);
+            //    if (tournament == null)
+            //        return NotFound();
 
-                var tournamentResult = new TournamentResult
-                {
-                    Id = tournament.Id,
-                    Description = tournament.Description,
-                    StartTimeUtc = tournament.StartTimeUtc,
-                    EndTimeUtc = tournament.EndTimeUtc,
-                    ImgUrl = tournament.ImgUrl,
-                    Name = tournament.Name
-                };
+            //    var tournamentResult = new TournamentResult
+            //    {
+            //        Id = tournament.Id,
+            //        Description = tournament.Description,
+            //        StartTimeUtc = tournament.StartTimeUtc,
+            //        EndTimeUtc = tournament.EndTimeUtc,
+            //        ImgUrl = tournament.ImgUrl,
+            //        Name = tournament.Name
+            //    };
 
-                tournamentResult.MarketResults = bets.Select(b => new MarketResult
-                {
-                    MarketId = b.MarketId,
-                    ChosenSelectionId = b.SelectionId
-                }).ToList();
-                tournamentResult.MarketResults.ForEach(x =>
-                {
-                    var market = marketRepository.GetById(x.MarketId);
-                    if (market != null)
-                    {
-                        x.Selections = market.Selections?.Select(s => new Selection
-                        {
-                            Id = s.Id,
-                            ImgUrl = s.ImgUrl,
-                            Name = s.Name,
-                            Odds = s.Odds.ToString(),
-                            Result = s.Result
-                        });
-                        x.WinningSelectionId = x.Selections.FirstOrDefault(s => s.Result == true)?.Id;
-                        x.Name = market.Name;
-                        x.ImgUrl = market.ImgUrl;
-                    };
-                });
+            //    tournamentResult.MarketResults = bets.Select(b => new MarketResult
+            //    {
+            //        MarketId = b.MarketId,
+            //        ChosenSelectionId = b.SelectionId
+            //    }).ToList();
+            //    tournamentResult.MarketResults.ForEach(x =>
+            //    {
+            //        var market = marketRepository.GetById(x.MarketId);
+            //        if (market != null)
+            //        {
+            //            x.Selections = market.Selections?.Select(s => new Selection
+            //            {
+            //                Id = s.Id,
+            //                ImgUrl = s.ImgUrl,
+            //                Name = s.Name,
+            //                Odds = s.Odds.ToString(),
+            //                Result = s.Result
+            //            });
+            //            x.WinningSelectionId = x.Selections.FirstOrDefault(s => s.Result == true)?.Id;
+            //            x.Name = market.Name;
+            //            x.ImgUrl = market.ImgUrl;
+            //        };
+            //    });
 
-                return Ok(tournamentResult);
-            }
+            //    return Ok(tournamentResult);
+            //}
         }
 
         public int UserId
@@ -148,14 +150,20 @@ namespace Arena42.Controllers
         {
             using (var db = new Adriana42Context())
             {
+                var repositoryTournament = new Repository<Models.Tournament>(db);
+                var repositoryMarket = new Repository<Models.Market>(db);
+                var repositorySelection = new Repository<Models.Selection>(db);
+                var repositoryUser = new Repository<Models.User>(db);
+
+
                 var repository = new Repository<Models.Bet>(db);
                 var bet = new Models.Bet
                 {
                     Date = DateTime.UtcNow,
-                    TournamentId = tournamentId,
-                    MarketId = marketId,
-                    SelectionId = selectionId,
-                    UserId = UserId
+                    Tournament = repositoryTournament.GetById(tournamentId),
+                    Market = repositoryMarket.GetById(marketId),
+                    Selection = repositorySelection.GetById(selectionId),
+                    User = repositoryUser.GetById(UserId)
                 };
                 repository.Add(bet);
                 db.SaveChanges();
@@ -176,7 +184,7 @@ namespace Arena42.Controllers
                 selection.Result = request.Result;
 
                 var repository = new Repository<Models.Bet>(db);
-                var bets = repository.Find(b => b.SelectionId == request.SelectionId).ToList();
+                var bets = repository.Find(b => b.Selection.Id == request.SelectionId).ToList();
                 bets.ForEach(b => b.Result = request.Result);
 
                 db.SaveChanges();

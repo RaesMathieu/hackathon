@@ -28,7 +28,9 @@ namespace Arena42.Services.EF.Configuration
                 });
 
             HasMany(x => x.Selections);
-            
+
+            HasMany(x => x.Bet);
+
         }
     }
 }

@@ -17,5 +17,7 @@ namespace Arena42.Models
         public int MarketId { get; set; }
         public bool? Result { get; set; }
 
+        public virtual ICollection<Bet> Bet { get; set; }
+
     }
 }
