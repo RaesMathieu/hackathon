@@ -9,6 +9,7 @@ using System.Web.Http;
 using Arena42.Services;
 using Arena42.Services.Repository;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Arena42.Controllers
 {
@@ -90,53 +91,64 @@ namespace Arena42.Controllers
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(TournamentResult))]
         public IHttpActionResult GetResultByTournamentId(int tournamentId)
         {
-            throw new NotImplementedException();
-            //using (var db = new Adriana42Context())
-            //{
-            //    var tournamentRepository = new Repository<Models.Tournament>(db);
-            //    var marketRepository = new Repository<Models.Market>(db);
-            //    var betRepository = new Repository<Models.Bet>(db);
-            //    var bets = betRepository.Find(b => b.TournamentId == tournamentId);
-            //    var tournament = tournamentRepository.GetById(t => t.Id == tournamentId);
-            //    if (tournament == null)
-            //        return NotFound();
+            //throw new NotImplementedException();
 
-            //    var tournamentResult = new TournamentResult
-            //    {
-            //        Id = tournament.Id,
-            //        Description = tournament.Description,
-            //        StartTimeUtc = tournament.StartTimeUtc,
-            //        EndTimeUtc = tournament.EndTimeUtc,
-            //        ImgUrl = tournament.ImgUrl,
-            //        Name = tournament.Name
-            //    };
+            using (var db = new Adriana42Context())
+            {
+                var tournamentRepository = new Repository<Models.Tournament>(db);
+                var betRepository = new Repository<Models.Bet>(db);
 
-            //    tournamentResult.MarketResults = bets.Select(b => new MarketResult
-            //    {
-            //        MarketId = b.MarketId,
-            //        ChosenSelectionId = b.SelectionId
-            //    }).ToList();
-            //    tournamentResult.MarketResults.ForEach(x =>
-            //    {
-            //        var market = marketRepository.GetById(x.MarketId);
-            //        if (market != null)
-            //        {
-            //            x.Selections = market.Selections?.Select(s => new Selection
-            //            {
-            //                Id = s.Id,
-            //                ImgUrl = s.ImgUrl,
-            //                Name = s.Name,
-            //                Odds = s.Odds.ToString(),
-            //                Result = s.Result
-            //            });
-            //            x.WinningSelectionId = x.Selections.FirstOrDefault(s => s.Result == true)?.Id;
-            //            x.Name = market.Name;
-            //            x.ImgUrl = market.ImgUrl;
-            //        };
-            //    });
+                var allTournaments = tournamentRepository.All().Where(x => x.Id == tournamentId).ToList();
+                var userBets =  betRepository.All().Where(x => x.User.Id == UserId && x.Tournament.Id == tournamentId).ToList();
 
-            //    return Ok(tournamentResult);
-            //}
+
+                var tournam = allTournaments.Select(x => new Models.DTO.TournamentResult
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    ImgUrl = x.ImgUrl,
+                    Description = x.Description,
+                    StartTimeUtc = x.StartTimeUtc,
+                    EndTimeUtc = x.EndTimeUtc,
+                    MarketResults = new List<MarketResult>(userBets.Select(z => new Models.DTO.MarketResult
+                    {
+                        Market = new Market
+                        {
+                            Id = z.Market.Id,
+                            Name = z.Market.Name,
+                            ImgUrl = z.Market.ImgUrl,
+                            Selections = new List<Selection>(z.Market.Selections.Select(y => new Models.DTO.Selection
+                            {
+                                Id = y.Id,
+                                Name = y.Name,
+                                ImgUrl = y.ImgUrl,
+                                Odds = y.Odds.ToString(),
+                                Result = y.Result
+                            }))                            
+                        },
+                        ChosenSelection = new Models.DTO.Selection
+                        {
+                            Id = z.Selection.Id,
+                            Name = z.Selection.Name,
+                            ImgUrl = z.Selection.ImgUrl,
+                            Result = z.Selection.Result,
+                            Odds = z.Selection.Odds.ToString()
+                        },
+                        WinningSelection = z.Market.Selections.Where(xx => xx.Result == true).Select(xxx => new Models.DTO.Selection
+                        {
+                            Name = xxx.Name,
+                            ImgUrl = xxx.ImgUrl,
+                            Id = xxx.Id,
+                            Result = xxx.Result,
+                            Odds = xxx.Odds.ToString()
+                        }).FirstOrDefault()
+                    }))
+                    
+                }).FirstOrDefault();
+
+                return Ok(tournam);
+
+            }
         }
 
         public int UserId

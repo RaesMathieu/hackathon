@@ -9,9 +9,22 @@ namespace Arena42.Controllers
 {
     public class RankingController : Controller
     {
+        public int UserId
+        {
+            get { return int.Parse(this.Request.Headers.GetValues("X-CLIENT").FirstOrDefault()); }
+        }
+
         public ActionResult Results(int tournamentId)
         {
-            throw  new  NotImplementedException();
+            throw  new NotImplementedException();
+            //using (var db = new Adriana42Context())
+            //{
+            //    var betRepository = new Repository<Models.Bet>(db);
+
+            //    betRepository.Find(x => x.Tournament.Id == tournamentId && x.User.Id == UserId)
+
+
+            //}
             //using (var db = new Adriana42Context())
             //{
             //    var tournamentRepository = new Repository<Models.Tournament>(db);
@@ -22,42 +35,42 @@ namespace Arena42.Controllers
             //    if (tournament == null)
             //        return HttpNotFound();
 
-            //    var tournamentResult = new TournamentResult
-            //    {
-            //        Id = tournament.Id,
-            //        Description = tournament.Description,
-            //        StartTimeUtc = tournament.StartTimeUtc,
-            //        EndTimeUtc = tournament.EndTimeUtc,
-            //        ImgUrl = tournament.ImgUrl,
-            //        Name = tournament.Name
-            //    };
+                //    var tournamentResult = new TournamentResult
+                //    {
+                //        Id = tournament.Id,
+                //        Description = tournament.Description,
+                //        StartTimeUtc = tournament.StartTimeUtc,
+                //        EndTimeUtc = tournament.EndTimeUtc,
+                //        ImgUrl = tournament.ImgUrl,
+                //        Name = tournament.Name
+                //    };
 
-            //    tournamentResult.MarketResults = bets.Select(b => new MarketResult
-            //    {
-            //        MarketId = b.Market.Id,
-            //        ChosenSelectionId = b.Selection.Id
-            //    }).ToList();
-            //    tournamentResult.MarketResults.ForEach(x =>
-            //    {
-            //        var market = marketRepository.GetById(x.Market.Id);
-            //        if (market != null)
-            //        {
-            //            x.Selections = market.Selections?.Select(s => new Selection
-            //            {
-            //                Id = s.Id,
-            //                ImgUrl = s.ImgUrl,
-            //                Name = s.Name,
-            //                Odds = s.Odds.ToString(),
-            //                Result = s.Result
-            //            });
-            //            x.WinningSelectionId = x.Selections.FirstOrDefault(s => s.Result == true)?.Id;
-            //            x.Name = market.Name;
-            //            x.ImgUrl = market.ImgUrl;
-            //        };
-            //    });
+                //    tournamentResult.MarketResults = bets.Select(b => new MarketResult
+                //    {
+                //        MarketId = b.Market.Id,
+                //        ChosenSelectionId = b.Selection.Id
+                //    }).ToList();
+                //    tournamentResult.MarketResults.ForEach(x =>
+                //    {
+                //        var market = marketRepository.GetById(x.Market.Id);
+                //        if (market != null)
+                //        {
+                //            x.Selections = market.Selections?.Select(s => new Selection
+                //            {
+                //                Id = s.Id,
+                //                ImgUrl = s.ImgUrl,
+                //                Name = s.Name,
+                //                Odds = s.Odds.ToString(),
+                //                Result = s.Result
+                //            });
+                //            x.WinningSelectionId = x.Selections.FirstOrDefault(s => s.Result == true)?.Id;
+                //            x.Name = market.Name;
+                //            x.ImgUrl = market.ImgUrl;
+                //        };
+                //    });
 
-            //    return View(tournamentResult); ;
-            //}
+                //    return View(tournamentResult); ;
+                //}
         }
 
         public ActionResult LeaderBoard(int tournamentId)
