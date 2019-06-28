@@ -1,0 +1,49 @@
+﻿@model Arena42.Models.DTO.TournamentResult
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body style="background: linear-gradient(0.25turn, #ff9c00, #ff0000);">
+    <span>
+        <span style="font-size:x-large;color:#FFFFFF;">
+            @Model.Name
+        </span>
+        <br />
+        <br />
+    </span>
+    <span style="font-size:large;">
+        @foreach (var res in Model.MarketResults)
+        {
+            <span>
+                <span style="font-size:larger;color:#FFFFFF;">
+                    @res.Name
+                    <br />
+                </span>
+                @foreach (var selection in res.Selections)
+                {
+                    if (selection.Id == res.WinningSelectionId)
+                    {
+                        <span style="color:green;">@selection.Name</span>
+                    }
+                    else
+                    {
+                        <span style="color:black;">@selection.Name</span>
+                    }
+                    <br />
+                    <br />
+                }
+            </span>
+        }
+        <span />
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+</body>
+</html>

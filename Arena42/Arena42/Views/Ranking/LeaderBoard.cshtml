@@ -1,0 +1,43 @@
+﻿@model Arena42.Models.DTO.LeaderBoard
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body style="background: linear-gradient(0.25turn, #ff9c00, #ff0000);">
+    <span>
+        <span style="font-size:x-large;color:#FFFFFF;">
+            General leaderboard
+        </span>
+        <br />
+        <br />
+    </span>
+    <div style="font-size:large;">
+        @foreach (var res in Model.Ranking)
+        {
+            <div>
+                <div class="col-sm-2" style="font-size:larger;color:#000000;">
+                    @(Model.Ranking.IndexOf(res) + 1)
+                </div>
+                <div class="col-sm-2" style="font-size:larger;color:#000000;">
+                    @res.UserName
+                </div>
+                <div class="col-sm-2" style="font-size:larger;color:#000000;">
+                    @(res.Score > 0 ? res.Score.ToString() : "0")
+                </div>
+                <br />
+                <br />
+            </div>
+        }
+        <div />
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+</body>
+</html>
