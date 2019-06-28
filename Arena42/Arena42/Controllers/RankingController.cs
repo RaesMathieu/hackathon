@@ -8,14 +8,14 @@ namespace Arena42.Controllers
 {
     public class RankingController : Controller
     {
-        public ActionResult Results(int tournamentId)
+        public ActionResult Results(int tournamentId, int? token)
         {
             using (var db = new Adriana42Context())
             {
                 var tournamentRepository = new Repository<Models.Tournament>(db);
                 var marketRepository = new Repository<Models.Market>(db);
                 var betRepository = new Repository<Models.Bet>(db);
-                var bets = betRepository.Find(b => b.TournamentId == tournamentId);
+                var bets = betRepository.Find(b => b.TournamentId == tournamentId && (!token.HasValue || token.Value == b.UserId));
                 var tournament = tournamentRepository.GetById(t => t.Id == tournamentId);
                 if (tournament == null)
                     return HttpNotFound();

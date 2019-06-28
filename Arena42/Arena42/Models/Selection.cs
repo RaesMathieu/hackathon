@@ -16,6 +16,7 @@ namespace Arena42.Models
         public string ImgUrl { get; set; }
         public int MarketId { get; set; }
         public bool? Result { get; set; }
+        public int? Position { get; set; }
 
     }
 }

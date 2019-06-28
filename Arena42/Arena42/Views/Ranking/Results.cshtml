@@ -11,7 +11,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body style="background: linear-gradient(0.25turn, #ff9c00, #ff0000);">
+<body style="background: linear-gradient(0.25turn, #ff9c00, #ff0000);padding:5%;">
     <span>
         <span style="font-size:x-large;color:#FFFFFF;">
             @Model.Name
@@ -19,10 +19,10 @@
         <br />
         <br />
     </span>
-    <span style="font-size:large;">
+    <div style="font-size:large;">
         @foreach (var res in Model.MarketResults)
         {
-            <span>
+            <div class="row" style="padding-bottom:20px;">
                 <span style="font-size:larger;color:#FFFFFF;">
                     @res.Name
                     <br />
@@ -31,19 +31,24 @@
                 {
                     if (selection.Id == res.WinningSelectionId)
                     {
-                        <span style="color:green;">@selection.Name</span>
+                        <div class="col-sm-2">
+                            <span>Winner</span>
+                            <span style="color:green;">@selection.Name</span><br/>
+                            <img src="@selection.ImgUrl" style="max-height:50px;" />
+                        </div>
                     }
                     else
                     {
-                        <span style="color:black;">@selection.Name</span>
+                        <div class="col-sm-2">
+                            <span style="color:black;">@selection.Name</span><br />
+                            <img src="@selection.ImgUrl" style="max-height:50px;" />
+                        </div>
                     }
-                    <br />
-                    <br />
                 }
-            </span>
+            </div>
         }
-        <span />
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
+    <div />
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
 </body>
 </html>

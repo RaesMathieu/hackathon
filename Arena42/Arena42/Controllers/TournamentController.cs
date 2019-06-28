@@ -35,7 +35,7 @@ namespace Arena42.Controllers
                         Id = y.Id,
                         Name = y.Name,
                         ImgUrl = y.ImgUrl,
-                        Selections = y.Selections.Select(s => new Selection
+                        Selections = y.Selections.OrderBy(s => s.Position).Select(s => new Selection
                         {
                             Id = s.Id,
                             ImgUrl = s.ImgUrl,

@@ -28,10 +28,7 @@ namespace Arena42.Services
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("https://sportapi.begmedia.com/api/pub/v3/");
-                client.
-                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                var response = await client.GetAsync("events");
+
             }
 
             return null;
