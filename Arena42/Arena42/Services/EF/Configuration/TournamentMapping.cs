@@ -31,6 +31,10 @@ namespace Arena42.Services.EF.Configuration
                     x.ToTable("TournamentMarket");
                 });
 
+            HasMany(x => x.Bet)
+                .WithRequired(x => x.Tournament)
+                .Map(x => x.MapKey("TournamentId"));
+
 
             //HasOptional(g => g.ParentGame)
             //    .WithMany(a => a.Rounds)

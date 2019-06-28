@@ -16,6 +16,10 @@ namespace Arena42.Services.EF.Configuration
 
             Property(g => g.UserName).IsRequired();
             Property(g => g.Password).IsOptional();
+
+            HasMany(x => x.Bet)
+                .WithRequired(x => x.User)
+                .Map(x => x.MapKey("UserId"));
         }
     }
 }

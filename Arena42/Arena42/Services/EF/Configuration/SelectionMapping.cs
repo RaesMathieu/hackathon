@@ -18,10 +18,16 @@ namespace Arena42.Services.EF.Configuration
             Property(g => g.ImgUrl).IsRequired();
             Property(g => g.Name).IsRequired();
             Property(g => g.Odds).IsRequired();
-            Property(g => g.MarketId).IsRequired();
+            //Property(g => g.MarketId).IsRequired();
             Property(g => g.Result);
 
-            HasMany(x => x.Bet);
+            HasMany(x => x.Bet)
+                .WithRequired(x => x.Selection)
+                .Map(x => x.MapKey("SelectionId"));
+
+            HasRequired(x => x.Market)
+                .WithMany(x => x.Selections)
+                .Map(x => x.MapKey("MarketId"));
         }
     }
 }

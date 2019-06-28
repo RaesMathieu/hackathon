@@ -27,9 +27,13 @@ namespace Arena42.Services.EF.Configuration
                     x.ToTable("TournamentMarket");
                 });
 
-            HasMany(x => x.Selections);
+            HasMany(x => x.Selections)
+                .WithRequired(x => x.Market)
+                .Map(x => x.MapKey("MarketId"));
 
-            HasMany(x => x.Bet);
+            HasMany(x => x.Bet)
+                .WithRequired(x => x.Market)
+                .Map(x => x.MapKey("MarketId"));
 
         }
     }

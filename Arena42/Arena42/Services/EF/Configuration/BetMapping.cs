@@ -19,15 +19,20 @@ namespace Arena42.Services.EF.Configuration
             Property(g => g.Result);
 
             HasRequired(x => x.Tournament)
-                .WithMany(x => x.Bet);
+                .WithMany(x => x.Bet)
+                .Map( x => x.MapKey("TournamentId"));
 
             HasRequired(x => x.Market)
-                .WithMany(x => x.Bet);
+                .WithMany(x => x.Bet)
+                .Map(x => x.MapKey("MarketId"));
 
             HasRequired(x => x.Selection)
-                .WithMany(x => x.Bet);
+                .WithMany(x => x.Bet)
+                .Map(x => x.MapKey("SelectionId"));
 
-            HasRequired(x => x.User);
+            HasRequired(x => x.User)
+                .WithMany(x => x.Bet)
+                .Map(x => x.MapKey("UserId"));
 
 
         }
