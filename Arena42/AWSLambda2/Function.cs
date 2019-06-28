@@ -56,7 +56,7 @@ namespace AWSLambda2
                     {
                         context.Logger.LogLine($"team is null in attributes");
                     }
-                    else if (team.Value.StringValue == "42")
+                    else if (team.Value.StringValue == "adriana42")
                     {
                         var selectionResult = JsonConvert.DeserializeObject<SelectionResult>(message.Body);
                         client.BaseAddress = new Uri("http://adriana42.eu-west-1.elasticbeanstalk.com/api/");
