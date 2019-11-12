@@ -43,16 +43,11 @@ namespace ThermoBet.API.Controllers
             foreach (var tournament in result)
             {
                 var bets = await _tournamentService.GetBetAsync(userId, tournament.Id);
-                var selectionChoice = bets.ToDictionary(x => x.Selection.Id, x => x.Selection.Id);
-                var marketChoice = bets.ToDictionary(x => x.Market.Id, x => x.Market.Id);
 
                 foreach (var market in tournament.Markets)
                 {
-                    foreach (var selection in market.Selections)
-                    {
-                        if (marketChoice.ContainsKey(market.Id))
-                            selection.UserChoice = selectionChoice.ContainsKey(selection.Id);
-                    }
+                    market.WinningSelectionId = market.Selections.FirstOrDefault(s => s.Result == true)?.Id;
+                    market.ChosenSelectionId = bets.FirstOrDefault(s => s.Market.Id == market.Id)?.Selection?.Id;
                 }
 
             }

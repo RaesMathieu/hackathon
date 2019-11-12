@@ -3,17 +3,17 @@
 <input type="hidden" asp-for="Id" />
 <input type="hidden" asp-for="IsYes" />
 @{
-        var cssClass = Model.IsYes ? "border-success" : "border-danger";
+    var cssClass = Model.IsYes ? "border-success" : "border-danger";
 }
 <div class="col">
-         <div class="card mb-3 @cssClass">
-                <div class="card-header">
-                        <input asp-for="Name" class="form-control">
-                        <span asp-validation-for="Name" class="text text-danger"></span>
-                </div>
-                <div class="card-body">
-                        <input asp-for="ImgUrl" class="form-control">
-                        <span asp-validation-for="ImgUrl" class="text text-danger"></span>
-                </div>
+    <div class="card mb-3 @cssClass">
+        <div class="card-header">
+            <input asp-for="Name" class="form-control">
+            <span asp-validation-for="Name" class="text text-danger"></span>
         </div>
+        <div class="card-body">
+            <input asp-for="ImgUrl" class="form-control">
+            <span asp-validation-for="ImgUrl" class="text text-danger"></span>
+        </div>
+    </div>
 </div>

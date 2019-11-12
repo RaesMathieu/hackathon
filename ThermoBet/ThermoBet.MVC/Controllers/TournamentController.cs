@@ -39,7 +39,8 @@ namespace ThermoBet.MVC.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Add()
         {
-            var tournament = new Core.Models.TournamentModel {
+            var tournament = new Core.Models.TournamentModel
+            {
                 Markets = new List<Core.Models.MarketModel>{
                     new Core.Models.MarketModel {
                         Selections = new List<Core.Models.SelectionModel> {

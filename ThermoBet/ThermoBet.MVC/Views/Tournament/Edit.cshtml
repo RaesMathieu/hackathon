@@ -7,49 +7,49 @@
 
 <div class="container-fluid">
 
-          <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">Edition d'un tournament</h1>
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Edition d'un tournament</h1>
 
 
 
-                <form id="form1" asp-controller="Tournament" asp-action="Edit" method="post">
-                    
-                    @Html.EditorForModel()
+    <form id="form1" asp-controller="Tournament" asp-action="Edit" method="post">
 
-<div class="card mb-3">
-  <div class="card-body">
-    <h5 class="card-title">Markets</h5>
-    <p class="card-text">
-                    @for (int i = 0; i < Model.Markets.Count;i++ )
+        @Html.EditorForModel()
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Markets</h5>
+                <p class="card-text">
+                    @for (int i = 0; i < Model.Markets.Count; i++)
                     {
                         <div class="card mb-3">
                             @Html.EditorFor(m => m.Markets[i])
-                            <button name="button"class="btn btn-danger btn-block" value="@i" asp-action="RemoveMarket" >Supprimer</button>
+                            <button name="button" class="btn btn-danger btn-block" value="@i" asp-action="RemoveMarket">Supprimer</button>
                         </div>
                     }
-                    <button name="button"class="btn btn-primary btn-block" asp-action="AddMarket" >Ajouter</button>
-    </p>
-  </div>
-</div>
-                    
-
-                    <div class="form-group">
-                            <!-- <a href="#" class="btn btn-success btn-icon-split" onclick="document.getElementById('form1').submit("Save");">
-                                <span class="icon text-white-50">
-                                <i class="fas fa-check"></i>
-                                </span>
-                                <span class="text">Sauvegarder</span>
-                            </a> -->
-                            <hr/>
-                            <div class="float-right">
-                                <button name="button"class="btn btn-success" value="Save">Sauvegarder</button>
-                                <button name="button"class="btn btn-secondary" value="Cancel">Retour</button>
-                            </div>
-                            
+                    <button name="button" class="btn btn-primary btn-block" asp-action="AddMarket">Ajouter</button>
+                </p>
+            </div>
+        </div>
 
 
-                    </div>
-                </form>
+        <div class="form-group">
+            <!-- <a href="#" class="btn btn-success btn-icon-split" onclick="document.getElementById('form1').submit("Save");">
+                <span class="icon text-white-50">
+                <i class="fas fa-check"></i>
+                </span>
+                <span class="text">Sauvegarder</span>
+            </a> -->
+            <hr />
+            <div class="float-right">
+                <button name="button" class="btn btn-success" value="Save">Sauvegarder</button>
+                <button name="button" class="btn btn-secondary" value="Cancel">Retour</button>
+            </div>
+
 
 
         </div>
+    </form>
+
+
+</div>
