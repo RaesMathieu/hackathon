@@ -21,46 +21,36 @@ namespace ThermoBet.Data
                 return;
             }
 
-            for(int i =0; i< 100 ; i++)
-            {
             context.Tournaments.Add(new TournamentModel
             {
-                Description = "Tournament inserting for testing n" + i,
-                EndTimeUtc = DateTime.UtcNow.AddDays(i*-1),
-                Name = "TestTournament n" + i,
-                StartTimeUtc = DateTime.UtcNow.AddDays((i+1)*-1),
+                Description = "",
+                EndTimeUtc = DateTime.Today.AddDays(1).ToUniversalTime(),
+                Name = "Salve de aujoutd'hui",
+                StartTimeUtc = DateTime.Today.ToUniversalTime(),
                 Markets = new List<MarketModel>() {
                     new MarketModel {
-                        Name = "Lille - Valence",
+                        Name = "Lille vas t'il gagner le match se soir ?",
                         Selections = new List<SelectionModel>() {
                             new SelectionModel {
                                 Name = "Lille",
-                                Odds = 1.02m
-                            },
-                            new SelectionModel {
-                                Name = "NULL",
-                                Odds = 1.10m
+                                IsYes = true
                             },
                             new SelectionModel {
                                 Name = "Valence",
-                                Odds = 2.42m
+                                IsYes = false
                             },
                         }
                     },
                     new MarketModel {
-                        Name = "Benefica - Lyon",
+                        Name = "Benefica vas t'il gagner le match se soir ?",
                         Selections = new List<SelectionModel>() {
                             new SelectionModel {
                                 Name = "Benefica",
-                                Odds = 1.02m
-                            },
-                            new SelectionModel {
-                                Name = "NULL",
-                                Odds = 1.10m
+                                IsYes = true
                             },
                             new SelectionModel {
                                 Name = "Lyon",
-                                Odds = 2.42m
+                                IsYes = false
                             },
                         }
                     }
@@ -68,8 +58,42 @@ namespace ThermoBet.Data
 
             });
 
-            }
+            context.Tournaments.Add(new TournamentModel
+            {
+                Description = "",
+                EndTimeUtc = DateTime.Today.ToUniversalTime(),
+                Name = "Salve de hier",
+                StartTimeUtc = DateTime.Today.AddDays(-1).ToUniversalTime(),
+                Markets = new List<MarketModel>() {
+                    new MarketModel {
+                        Name = "Marseille vas t'il gagner le match se soir ?",
+                        Selections = new List<SelectionModel>() {
+                            new SelectionModel {
+                                Name = "Marseille",
+                                IsYes = true
+                            },
+                            new SelectionModel {
+                                Name = "Valence",
+                                IsYes = false
+                            },
+                        }
+                    },
+                    new MarketModel {
+                        Name = "Lyon vas t'il gagner le match se soir ?",
+                        Selections = new List<SelectionModel>() {
+                            new SelectionModel {
+                                Name = "Benefica",
+                                IsYes = true
+                            },
+                            new SelectionModel {
+                                Name = "Lyon",
+                                IsYes = false
+                            },
+                        }
+                    }
+                }
 
+            });
 
             context.Users.Add(new UserModel
             {

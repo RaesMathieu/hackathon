@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ThermoBet.Core.Models
 {
@@ -6,12 +7,9 @@ namespace ThermoBet.Core.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string ImgUrl { get; set; }
-
+        public DateTime StartTimeUtc { get; set; }
         public virtual ICollection<SelectionModel> Selections { get; set; }
-
         public virtual ICollection<BetModel> Bets {get; set;}
-
         public virtual TournamentModel Tournament { get; set; }
     }
 }

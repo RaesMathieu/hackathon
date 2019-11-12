@@ -43,9 +43,14 @@ namespace ThermoBet.MVC.Controllers
                 Markets = new List<Core.Models.MarketModel>{
                     new Core.Models.MarketModel {
                         Selections = new List<Core.Models.SelectionModel> {
-                            new Core.Models.SelectionModel(),
-                            new Core.Models.SelectionModel(),
                             new Core.Models.SelectionModel()
+                            {
+                                IsYes = true
+                            },
+                            new Core.Models.SelectionModel()
+                            {
+                                IsYes = false
+                            }
                         }
                     }
                 }
@@ -86,9 +91,14 @@ namespace ThermoBet.MVC.Controllers
             movie.Markets.Add(new MarketViewModel
             {
                 Selections = new List<SelectionViewModel>{
-                    new SelectionViewModel(),
-                    new SelectionViewModel(),
                     new SelectionViewModel()
+                    {
+                        IsYes = true
+                    },
+                    new SelectionViewModel()
+                    {
+                        IsYes = false
+                    }
                 }
             });
 

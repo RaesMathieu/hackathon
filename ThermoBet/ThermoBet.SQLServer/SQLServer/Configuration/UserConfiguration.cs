@@ -25,7 +25,8 @@ namespace ThermoBet.Data
 
             entityTypeBuilder
                 .HasIndex(c => new {c.Login, c.HashPassword})
-                .IsUnique(true);
+                .IsUnique(true)
+                .HasFilter(null);
         }
     }
 }

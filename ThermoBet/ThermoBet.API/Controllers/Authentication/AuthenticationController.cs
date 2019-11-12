@@ -15,7 +15,6 @@ using ThermoBet.Core.Models;
 namespace ThermoBet.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
     public class AuthenticationController : ControllerBase
     {
         private IConfiguration _config;

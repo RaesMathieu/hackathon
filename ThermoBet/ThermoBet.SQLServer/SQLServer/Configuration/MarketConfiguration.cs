@@ -14,12 +14,15 @@ namespace ThermoBet.Data
             entityTypeBuilder.Property(c => c.Id)
                 .ValueGeneratedOnAdd();
 
-            entityTypeBuilder.Property(c => c.ImgUrl)
-                .HasMaxLength(255);
-
             entityTypeBuilder.Property(c => c.Name)
                 .HasMaxLength(250)
                 .IsRequired(true);
+
+            entityTypeBuilder.Property(c => c.StartTimeUtc)
+                .IsRequired(true);
+
+            entityTypeBuilder.HasMany(c => c.Selections)
+                .WithOne(c => c.Market);
         }
     }
 }

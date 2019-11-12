@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ThermoBet.MVC.Models
 {
@@ -6,8 +8,10 @@ namespace ThermoBet.MVC.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string ImgUrl { get; set; }
-
+        
+        [Required]
+        [DataType(DataType.DateTime)]
+        public DateTime StartTimeUtc { get; set; }
         public virtual List<SelectionViewModel> Selections { get; set; }
     }
 }

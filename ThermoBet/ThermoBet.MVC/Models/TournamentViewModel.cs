@@ -17,10 +17,6 @@ namespace ThermoBet.MVC.Models
         [MaxLength(2500)]
         public string Description { get; set; }
 
-
-        [DataType(DataType.ImageUrl)]
-        public string ImgUrl { get; set; }
-
         public virtual List<MarketViewModel> Markets { get; set; }
 
         [Required]

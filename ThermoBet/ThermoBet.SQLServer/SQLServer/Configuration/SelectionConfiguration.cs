@@ -15,13 +15,6 @@ namespace ThermoBet.Data
                 .Property(c => c.Id)
                 .ValueGeneratedOnAdd();
 
-            entityTypeBuilder
-                .Property(c => c.Odds)
-                .HasColumnType("decimal(3,2)");
-
-            entityTypeBuilder.Property(c => c.ImgUrl)
-                .HasMaxLength(250);
-            
             entityTypeBuilder.Property(c => c.Name)
                 .HasMaxLength(250)
                 .IsUnicode()
@@ -29,6 +22,17 @@ namespace ThermoBet.Data
 
             entityTypeBuilder.Property(c => c.Result)
                 .IsRequired(false);
+
+            entityTypeBuilder.Property(c => c.IsYes)
+                .IsRequired(true);
+
+            entityTypeBuilder.HasOne(c => c.Market)
+                .WithMany(c => c.Selections);
+
+            entityTypeBuilder
+                .HasIndex("MarketId", "IsYes")
+                .IsUnique(true)
+                .HasFilter(null);  
         }
     }
 }

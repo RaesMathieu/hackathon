@@ -4,7 +4,7 @@ namespace ThermoBet.MVC.Models
     {
         public int Id { get; set; }
 
-        public decimal Odds { get; set; }
+        public bool IsYes { get; set; }
 
         public string Name { get; set; }
 

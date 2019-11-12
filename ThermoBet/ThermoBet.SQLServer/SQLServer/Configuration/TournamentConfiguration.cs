@@ -17,9 +17,6 @@ namespace ThermoBet.Data
             entityTypeBuilder.Property(c => c.Description)
                 .HasMaxLength(2500);
 
-            entityTypeBuilder.Property(c => c.ImgUrl)
-                .HasMaxLength(255);
-
             entityTypeBuilder.Property(c => c.Name)
                 .HasMaxLength(250)
                 .IsRequired(true);
@@ -29,6 +26,9 @@ namespace ThermoBet.Data
 
             entityTypeBuilder.Property(c => c.StartTimeUtc)
                 .IsRequired(true);
+
+            entityTypeBuilder.HasMany(c => c.Markets)
+                .WithOne(c => c.Tournament);
         }
     }
 }
