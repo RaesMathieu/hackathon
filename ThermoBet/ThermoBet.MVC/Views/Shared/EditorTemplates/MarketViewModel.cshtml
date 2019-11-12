@@ -1,0 +1,15 @@
+@model ThermoBet.MVC.Models.MarketViewModel
+
+<input type="hidden" asp-for="Id" />
+  <h5 class="card-header">
+        <input asp-for="Name" class="form-control">
+        <span asp-validation-for="Name" class="text text-danger"></span>
+  </h5>
+  <div class="card-body">
+    <div class="row">
+        @for (int i = 0; i < Model.Selections.Count;i++ )
+                    {
+                        @Html.EditorFor(m => m.Selections[i])
+                    }
+    </div>
+  </div>
