@@ -23,6 +23,14 @@ namespace ThermoBet.Data
 
             entityTypeBuilder.HasMany(c => c.Selections)
                 .WithOne(c => c.Market);
+
+            entityTypeBuilder.Property(c => c.WinningSelectionId)
+                .IsRequired(false);
+
+            entityTypeBuilder
+                .HasIndex(c => c.WinningSelectionId)
+                .IsUnique(true)
+                .HasFilter(null);
         }
     }
 }

@@ -57,7 +57,7 @@ namespace ThermoBet.MVC.Controllers
         public async Task<IActionResult> Edit(int id, TournamentViewModel movie, string button)
         {
             if (button == "Cancel")
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(TournamentController.Index), nameof(TournamentController).Replace("Controller", ""));
 
             if (id != movie.Id)
             {
@@ -67,7 +67,14 @@ namespace ThermoBet.MVC.Controllers
             if (ModelState.IsValid)
             {
                 var tournament = _mapper.Map<Core.Models.TournamentModel>(movie);
-                await _tournamentService.Update(tournament);
+                var tournamentEdit = await _tournamentService.GetAsync(movie.Id);
+
+                var result = tournament.Markets.ToDictionary(x => x.Id, x => x.WinningSelectionId);
+
+                foreach (var market in tournamentEdit.Markets)
+                    market.WinningSelectionId = result[market.Id];
+
+                await _tournamentService.Update(tournamentEdit);
 
                 return RedirectToAction(nameof(Index));
             }
