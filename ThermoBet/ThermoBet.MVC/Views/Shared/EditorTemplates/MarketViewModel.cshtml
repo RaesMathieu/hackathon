@@ -1,6 +1,7 @@
 @model ThermoBet.MVC.Models.MarketViewModel
 
 <input type="hidden" asp-for="Id" />
+<input type="hidden" asp-for="WinningSelectionId" />
 <h5 class="card-header">
     <div class="form-group">
         <label for="Name">Question</label>
@@ -12,7 +13,6 @@
         <input asp-for="StartTimeUtc" class="form-control">
         <span asp-validation-for="StartTimeUtc" class="text text-danger"></span>
     </div>
-
 </h5>
 <div class="card-body">
     <div class="row">

@@ -11,5 +11,6 @@ namespace ThermoBet.Core.Models
         public virtual ICollection<SelectionModel> Selections { get; set; }
         public virtual ICollection<BetModel> Bets {get; set;}
         public virtual TournamentModel Tournament { get; set; }
+        public virtual int? WinningSelectionId { get; set; }
     }
 }

@@ -13,8 +13,6 @@ namespace ThermoBet.Core.Models
         
         public bool IsYes { get; set; }
 
-        public bool? Result { get; set; }
-
         public virtual MarketModel Market { get; set; }
 
         public virtual ICollection<BetModel> Bets { get; set; }

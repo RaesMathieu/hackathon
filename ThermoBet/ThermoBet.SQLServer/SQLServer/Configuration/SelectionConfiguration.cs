@@ -20,9 +20,6 @@ namespace ThermoBet.Data
                 .IsUnicode()
                 .IsRequired(true);
 
-            entityTypeBuilder.Property(c => c.Result)
-                .IsRequired(false);
-
             entityTypeBuilder.Property(c => c.IsYes)
                 .IsRequired(true);
 
