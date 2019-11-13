@@ -35,6 +35,18 @@ namespace ThermoBet.Data.Services
                     .ToListAsync();
         }
 
+        public async Task<IEnumerable<TournamentModel>> GetAlreadyStartedAsync(int lastNumber)
+        {
+            return await _thermoBetContext
+                    .Tournaments
+                    .Include(x => x.Markets)
+                        .ThenInclude(market => market.Selections)
+                    .Where(x => x.StartTimeUtc <= DateTime.UtcNow)
+                    .OrderByDescending(x => x.StartTimeUtc)
+                    .Take(lastNumber)
+                    .ToListAsync();
+        }
+
         public async Task<IEnumerable<TournamentModel>> GetAllAsync()
         {
             return await _thermoBetContext

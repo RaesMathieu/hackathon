@@ -19,4 +19,6 @@ public interface ITournamentService
     Task BetAsync(int userId, int tournamentId, int marketId, int selectionId);
 
     Task<IEnumerable<BetModel>> GetBetAsync(int userId, int tournamentId);
+
+    Task<IEnumerable<TournamentModel>> GetAlreadyStartedAsync(int lastNumber);
 }

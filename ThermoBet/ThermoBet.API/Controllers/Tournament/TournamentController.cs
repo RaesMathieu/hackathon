@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using ThermoBet.Core.Models;
 using System.Security.Claims;
-using System.Linq;
 
 namespace ThermoBet.API.Controllers
 {
@@ -39,6 +35,26 @@ namespace ThermoBet.API.Controllers
             var tournaments = await _tournamentService.GetCurrentsAsync();
             var result = _mapper.Map<IEnumerable<TournamentReponse>>(tournaments);
 
+            await MapUserBetAndWinningSelection(userId, result);
+
+            return result;
+        }
+
+        [HttpGet("api/tournaments/last/{number}")]
+        [Authorize(Roles = "User")]
+        public async Task<IEnumerable<TournamentReponse>> GetRankingAsync(int number)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.Sid)?.Value);
+            var tournaments = await _tournamentService.GetAlreadyStartedAsync(number);
+            var result = _mapper.Map<IEnumerable<TournamentReponse>>(tournaments);
+
+            await MapUserBetAndWinningSelection(userId, result);
+
+            return result;
+        }
+
+        private async Task MapUserBetAndWinningSelection(int userId, IEnumerable<TournamentReponse> result)
+        {
             // set user choice.
             foreach (var tournament in result)
             {
@@ -49,12 +65,8 @@ namespace ThermoBet.API.Controllers
                     market.WinningSelectionId = market.Selections.FirstOrDefault(s => s.Result == true)?.Id;
                     market.ChosenSelectionId = bets.FirstOrDefault(s => s.Market.Id == market.Id)?.Selection?.Id;
                 }
-
             }
-
-            return result;
         }
-
 
         [HttpPost("api/tournament/{tournamentId}/market/{marketId}/selection/{selectionId}")]
         [Authorize(Roles = "User")]
