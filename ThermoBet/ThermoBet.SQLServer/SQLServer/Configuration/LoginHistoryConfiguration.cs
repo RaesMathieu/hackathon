@@ -14,7 +14,7 @@ namespace ThermoBet.Data
             entityTypeBuilder.Property(c => c.Id)
                 .ValueGeneratedOnAdd();
 
-            entityTypeBuilder.Property(c => c.LoginDateUtc)
+            entityTypeBuilder.Property(c => c.LoginDateTimeUtc)
                 .IsRequired(true);
 
             entityTypeBuilder

@@ -63,7 +63,7 @@ namespace ThermoBet.Data.Services
                     .Add(new LoginHistoryModel
                     {
                         User = user,
-                        LoginDateUtc = DateTime.UtcNow
+                        LoginDateTimeUtc = DateTime.UtcNow
                     });
 
             await _thermoBetContext.SaveChangesAsync();

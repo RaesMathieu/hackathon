@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Text;
 using ThermoBet.Data;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -22,20 +21,18 @@ namespace ThermoBet.SQLServer.Services
         {
             var startDate = DateTime.Today.AddDays(nbDay * -1);
 
-            var result = await _thermoBetContext
+            var toReturn = await _thermoBetContext
                 .LoginHistories
-                .Where(x => x.LoginDateUtc >= startDate)
-                .Include(x => x.User)
-                .GroupBy(x => x.LoginDateUtc.Date)
-                .ToListAsync();
-
-            var toReturn = result
+                .Where(x => x.LoginDateTimeUtc >= startDate)
+                .Select(x => new { Date = x.LoginDateTimeUtc.Date, UserId= x.User.Id })
+                .Distinct()
+                .GroupBy(x => x.Date)
                 .Select(x => new
                 {
                     Date = x.Key,
-                    Count = x.Select(x => x.User.Id).Distinct().Count()
+                    Count = x.Count()
                 })
-                .ToDictionary(x => x.Date, x => x.Count);
+                .ToDictionaryAsync(x => x.Date, x => x.Count);
 
             for (var i = 0; i < nbDay; i++)
             {
@@ -50,21 +47,15 @@ namespace ThermoBet.SQLServer.Services
         {
             var startDate = DateTime.Today.AddDays(nbDay * -1);
 
-            var result = await _thermoBetContext
+            var toReturn = await _thermoBetContext
                 .LoginHistories
-                .Where(x => x.LoginDateUtc >= startDate)
-                .Include(x => x.User)
-                .GroupBy(x => x.LoginDateUtc.Date)
-                .ToListAsync();
-
-            var toReturn = result
-                
-                .Select(x => new
-                {
+                .Where(x => x.LoginDateTimeUtc >= startDate)
+                .GroupBy(x => x.LoginDateTimeUtc.Date)
+                .Select(x => new {
                     Date = x.Key,
-                    Count = x.Select(x => x.User.Id).Count()
+                    Count = x.Count()
                 })
-                .ToDictionary(x => x.Date, x => x.Count);
+                .ToDictionaryAsync(x => x.Date, x => x.Count);
 
             for (var i = 0; i < nbDay; i++)
             {

@@ -29,8 +29,8 @@ namespace ThermoBet.MVC.Controllers
         {
             return View(new DashboardViewModel
             {
-                NbUniqueLoginByDay = await _dashboardService.GetUniqueUserLoginByDay(15),
-                NbLoginByDay = await _dashboardService.GetUserLoginByDay(15)
+                NbUniqueLoginByDay = await _dashboardService.GetUniqueUserLoginByDay(10),
+                NbLoginByDay = await _dashboardService.GetUserLoginByDay(10)
             }); ;
         }
 

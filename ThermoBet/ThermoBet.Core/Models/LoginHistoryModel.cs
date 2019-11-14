@@ -8,6 +8,7 @@ namespace ThermoBet.Core.Models
 
         public virtual UserModel User { get; set; }
 
-        public DateTime LoginDateUtc { get; set; }
+
+        public DateTime LoginDateTimeUtc { get; set; }
     }
 }
