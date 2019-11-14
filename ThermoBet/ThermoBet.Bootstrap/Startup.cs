@@ -20,10 +20,18 @@ namespace ThermoBet.Bootstrap
         {
             // This is the new code.
             var connection = Configuration.GetConnectionString("DefaultDatabase");
-            services.AddDbContext<ThermoBetContext>(options =>
-                //options.UseInMemoryDatabase(databaseName: "ThermoBetInMemory")
-                options.UseMySql(connection)
-                );
+
+            //#if DEBUG
+            //{
+            //    services.AddDbContext<ThermoBetContext>(options =>
+            //    options.UseInMemoryDatabase(databaseName: "ThermoBetInMemory"));
+            //}
+            //#else
+            //{
+                services.AddDbContext<ThermoBetContext>(options =>
+                options.UseMySql(connection));
+            //}
+            //#endif
 
             services.AddScoped<ITournamentService, TournamentService>();
             services.AddScoped<IUserService, UserService>();
