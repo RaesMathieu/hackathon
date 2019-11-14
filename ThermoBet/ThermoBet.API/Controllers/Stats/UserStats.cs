@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-
-namespace ThermoBet.Core.Models
+namespace ThermoBet.API.Controllers
 {
-    public class UserStatsModel
+    public class UserStats
     {
         public int UserId { get; set; }
         public int MonthlySwipesCount { get; set; }

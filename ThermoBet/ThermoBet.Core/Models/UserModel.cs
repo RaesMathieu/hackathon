@@ -9,6 +9,8 @@ namespace ThermoBet.Core.Models
         public string Login { get; set; }
         public string HashPassword { get; set; }
         public bool IsAdmin { get; set; }
+        public int GlobalPoints { get; set; }
+        public int CurrentPoints { get; set; }
         public virtual ICollection<BetModel> Bets { get; set; }
     }
 }

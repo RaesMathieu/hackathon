@@ -1,0 +1,48 @@
+# For detailed explanation of how these config files should be used and created please see the developer guide here:
+#  http://docs.amazonwebservices.com/AWSToolkitVS/latest/UserGuide/tkv-deployment-tool.html
+
+# Edit the parameter line below to set the path to the deployment archive or use
+#     /DDeploymentPackage=value
+# on the awsdeploy.exe command line for more flexibility.
+# DeploymentPackage = <-- path to web deployment archive -->
+
+# Profile name is used to look up AWS access key and secret key
+# from either the SDK credentials store, or the credentials file found at
+# <userhome-directroy>\.aws\credentials. Alternatively the access key and 
+# secret key can be set using the command line parameters /DAWSAccessKey and /DAWSSecretKey.
+AWSProfileName = mathieu hackathon
+KeyPair = betdejournee-key
+Region = eu-west-3
+SolutionStack = 64bit Windows Server Core 2016 v2.3.0 running IIS 10.0
+Template = ElasticBeanstalk
+UploadBucket = elasticbeanstalk-eu-west-3-880751833104
+
+Application.Name = BetDeJourneeBackOffice
+
+aws:autoscaling:launchconfiguration.EC2KeyName = betdejournee-key
+aws:autoscaling:launchconfiguration.IamInstanceProfile = thermobet-ec2-role
+aws:autoscaling:launchconfiguration.InstanceType = t2.micro
+aws:autoscaling:launchconfiguration.SecurityGroups = sg-57d1433d
+
+aws:ec2:vpc.Subnets = subnet-3a9ceb41
+aws:ec2:vpc.VPCId = vpc-7e102117
+
+aws:elasticbeanstalk:application.Application Healthcheck URL = /
+
+aws:elasticbeanstalk:container:dotnet:apppool.Enable 32-bit Applications = False
+
+aws:elasticbeanstalk:environment.EnvironmentType = LoadBalanced
+aws:elasticbeanstalk:environment.ServiceRole = aws-elasticbeanstalk-service-role
+
+aws:elasticbeanstalk:healthreporting:system.SystemType = basic
+
+aws:elasticbeanstalk:xray.XRayEnabled = false
+
+Container.ApplicationHealthcheckPath = /
+Container.Enable32BitApplications = False
+Container.InstanceType = t2.micro
+Container.TargetRuntime = netcoreapp3.0
+
+Environment.CNAME = betdejourneebackoffice-prod
+Environment.Name = BetDeJourneeBackOffice-prod
+

@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 
-namespace ThermoBet.Core.Models
+namespace ThermoBet.API.Controllers
 {
-    public class StatsPositionModel
+    public class StatsPosition
     {
-        public int UserId { get; set; }
         public int Position { get; set; }
         public int Score { get; set; }
         public string Pseudo { get; set; }
