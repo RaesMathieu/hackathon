@@ -62,7 +62,7 @@ namespace ThermoBet.API.Controllers
 
                 foreach (var market in tournament.Markets)
                 {
-                    //market.WinningSelectionId = market.Selections.FirstOrDefault(s => s.Result == true)?.Id;
+                    market.WinningSelectionId = market.WinningSelectionId;
                     market.ChosenSelectionId = bets.FirstOrDefault(s => s.Market.Id == market.Id)?.Selection?.Id;
                 }
             }

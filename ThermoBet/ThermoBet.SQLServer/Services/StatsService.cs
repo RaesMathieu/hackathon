@@ -49,7 +49,7 @@ namespace ThermoBet.Data.Services
                 {
                     UserId = u.User.Id,
                     Position = u.Index + 1,
-                    //Pseudo = u.User.Pseudo ?? $"Joueur_{u.User.Id}",
+                    Pseudo = u.User.Pseudo ?? $"Joueur_{u.User.Id}",
                     Score = u.User.GlobalPoints
                 })
                 .ToList();
@@ -59,6 +59,7 @@ namespace ThermoBet.Data.Services
             {
                 var nextPositions = _thermoBetContext
                 .Users
+                .Where(u => u.GlobalPoints > 0)
                 .OrderByDescending(u => u.GlobalPoints)
                 .Select((u, i) => new { User = u, Index = i })
                 .Skip(3)
@@ -67,7 +68,7 @@ namespace ThermoBet.Data.Services
                 {
                     UserId = u.User.Id,
                     Position = u.Index + 1,
-                    //Pseudo = u.User.Pseudo ?? $"Joueur_{u.User.Id}",
+                    Pseudo = u.User.Pseudo ?? $"Joueur_{u.User.Id}",
                     Score = u.User.GlobalPoints
                 })
                 .ToList();
@@ -77,6 +78,7 @@ namespace ThermoBet.Data.Services
             {
                 var userPosition = _thermoBetContext
                 .Users
+                .Where(u => u.GlobalPoints > 0)
                 .OrderByDescending(u => u.GlobalPoints)
                 .Select((u, i) => new { UserId = u.Id, Index = i })
                 .Single(u => u.UserId == userId)
@@ -92,7 +94,7 @@ namespace ThermoBet.Data.Services
                 {
                     UserId = u.User.Id,
                     Position = u.Index + 1,
-                    //Pseudo = u.User.Pseudo ?? $"Joueur_{u.User.Id}",
+                    Pseudo = u.User.Pseudo ?? $"Joueur_{u.User.Id}",
                     Score = u.User.GlobalPoints
                 })
                 .ToList();

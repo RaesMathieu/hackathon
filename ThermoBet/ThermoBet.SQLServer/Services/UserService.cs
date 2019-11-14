@@ -1,8 +1,6 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ThermoBet.Core.Models;
-using ThermoBet.Data;
 
 namespace ThermoBet.Data.Services
 {
@@ -25,6 +23,11 @@ namespace ThermoBet.Data.Services
                 Login = login,
                 HashPassword = Encryptor.MD5Hash(password)
             };
+
+            if (await _thermoBetContext
+                .Users.AnyAsync(x => x.Login == login))
+                return null;
+
             _thermoBetContext
                 .Users
                 .Add(userModel);
@@ -43,6 +46,22 @@ namespace ThermoBet.Data.Services
             return await _thermoBetContext
                     .Users
                     .FirstOrDefaultAsync(x => x.Login == login && x.HashPassword == hashPassword);
+        }
+
+        public async Task<UserModel> GetByAsync(int id)
+        {
+            return await _thermoBetContext
+                    .Users
+                    .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task UpdateAsync(UserModel user)
+        {
+            _thermoBetContext
+                    .Users
+                    .Update(user);
+
+            await _thermoBetContext.SaveChangesAsync();
         }
     }
 }
