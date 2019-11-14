@@ -1,5 +1,8 @@
 namespace ThermoBet.API.Controllers
 {
+    /// <summary>
+    /// SigIn response
+    /// </summary>
     public abstract class SignInResponse
     {
         /// <summary>
