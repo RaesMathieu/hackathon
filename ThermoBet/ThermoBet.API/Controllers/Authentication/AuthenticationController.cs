@@ -53,6 +53,8 @@ namespace ThermoBet.API.Controllers
                         ErrorMessage = "User already exist."
                     });
 
+                await _userService.SigInAsync(user);
+
                 return Ok(new SignInSuccessResponse
                 {
                     IsSucsess = true,

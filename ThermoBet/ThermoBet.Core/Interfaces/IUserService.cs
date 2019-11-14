@@ -11,5 +11,7 @@ public interface IUserService
 
     Task<UserModel> GetByAsync(int id);
 
+    Task SigInAsync(UserModel user);
+
     Task UpdateAsync(UserModel user);
 }
