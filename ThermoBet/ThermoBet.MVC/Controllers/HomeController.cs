@@ -7,22 +7,31 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ThermoBet.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
+using ThermoBet.Core.Interfaces;
 
 namespace ThermoBet.MVC.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IDashboardService _dashboardService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(
+            ILogger<HomeController> logger,
+            IDashboardService dashboardService)
         {
             _logger = logger;
+            _dashboardService = dashboardService;
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            return View(new DashboardViewModel
+            {
+                NbUniqueLoginByDay = await _dashboardService.GetUniqueUserLoginByDay(10),
+                NbLoginByDay = await _dashboardService.GetUserLoginByDay(10)
+            }); ;
         }
 
         public IActionResult Privacy()

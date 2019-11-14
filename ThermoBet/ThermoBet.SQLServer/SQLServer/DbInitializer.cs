@@ -13,8 +13,9 @@ namespace ThermoBet.Data
         public static void Initialize(ThermoBetContext context)
         {
             #if !DEBUG
-                ClearData(context);
+                //ClearData(context);
             #endif
+            //context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
             if (context.Tournaments.Any())

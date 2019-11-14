@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ThermoBet.Core.Models;
@@ -55,6 +56,19 @@ namespace ThermoBet.Data.Services
                     .FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        public async Task SigInAsync(UserModel user)
+        {
+            _thermoBetContext
+                    .LoginHistories
+                    .Add(new LoginHistoryModel
+                    {
+                        User = user,
+                        LoginDateTimeUtc = DateTime.UtcNow
+                    });
+
+            await _thermoBetContext.SaveChangesAsync();
+        }
+
         public async Task UpdateAsync(UserModel user)
         {
             _thermoBetContext
@@ -63,5 +77,6 @@ namespace ThermoBet.Data.Services
 
             await _thermoBetContext.SaveChangesAsync();
         }
+
     }
 }

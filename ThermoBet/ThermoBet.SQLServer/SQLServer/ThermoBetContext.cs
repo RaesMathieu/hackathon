@@ -13,6 +13,7 @@ namespace ThermoBet.Data
         public DbSet<SelectionModel> Selections { get; set; }
         public DbSet<UserModel> Users { get; set; }
         public DbSet<BetModel> Bets { get; set; }
+        public DbSet<LoginHistoryModel> LoginHistories { get; set; }
 
 
         public ThermoBetContext(DbContextOptions<ThermoBetContext> options) : base(options)

@@ -38,6 +38,9 @@ namespace ThermoBet.Data
                 .IsUnique(true)
                 .HasFilter(null);
 
+            entityTypeBuilder
+                .HasMany(c => c.LoginDate)
+                .WithOne(c => c.User);
 
         }
     }
