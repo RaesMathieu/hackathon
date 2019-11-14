@@ -12,8 +12,8 @@ namespace ThermoBet.Data
     {
         public static void Initialize(ThermoBetContext context)
         {
+            ClearData(context);
             context.Database.EnsureCreated();
-            //context.Database.Migrate();
 
             if (context.Tournaments.Any())
             {
@@ -102,6 +102,20 @@ namespace ThermoBet.Data
             });
             
             context.SaveChanges();
+        }
+
+        private static void ClearData(ThermoBetContext context)
+        {
+            DropTable(context, "Bets");
+            DropTable(context, "Selections");
+            DropTable(context, "Markets");
+            DropTable(context, "Tournaments");
+            DropTable(context, "Users");
+        }
+
+        private static void DropTable(ThermoBetContext context, string tableName)
+        {
+            context.Database.ExecuteSqlCommand($"DROP TABLE IF EXISTS {tableName}");
         }
     }
 }
