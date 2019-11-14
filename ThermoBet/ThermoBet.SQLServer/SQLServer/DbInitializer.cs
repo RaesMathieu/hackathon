@@ -15,7 +15,6 @@ namespace ThermoBet.Data
             context.Database.EnsureCreated();
             //context.Database.Migrate();
 
-
             if (context.Tournaments.Any())
             {
                 return;
