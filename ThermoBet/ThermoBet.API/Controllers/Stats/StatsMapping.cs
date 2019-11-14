@@ -1,5 +1,5 @@
-using System.Linq;
 using AutoMapper;
+using System.Collections.Generic;
 using ThermoBet.Core.Models;
 
 namespace ThermoBet.API.Controllers
@@ -9,14 +9,16 @@ namespace ThermoBet.API.Controllers
         public StatsMapping()
         {
             CreateMap<StatsPositionModel, StatsPosition>()
-            .ReverseMap();
+                .ReverseMap();
 
             CreateMap<UserStatsModel, UserStats>()
-            .ReverseMap();
+                .ReverseMap();
 
             CreateMap<StatsModel, Stats>()
-            .ReverseMap();
+                .ReverseMap();
 
+            CreateMap<IEnumerable<StatsPositionModel>, IEnumerable<StatsPositionModel>>()
+                .ReverseMap();
         }
     }
 }

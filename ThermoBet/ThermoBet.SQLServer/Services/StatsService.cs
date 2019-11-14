@@ -39,10 +39,14 @@ namespace ThermoBet.Data.Services
                 SucceedPercentage = resultedBetCount == 0 ? 0 : (int)((decimal)winningsBets / resultedBetCount * 100)
             };
 
-            //Calculate first 3 places
-            var positions = _thermoBetContext
+            var users = (await _thermoBetContext
                 .Users
+                .Where(u => u.GlobalPoints > 0)
                 .OrderByDescending(u => u.GlobalPoints)
+                .ToListAsync());
+
+            //Calculate first 3 places
+            var positions = users
                 .Select((u, i) => new { User = u, Index = i })
                 .Take(3)
                 .Select(u => new StatsPositionModel
@@ -57,10 +61,7 @@ namespace ThermoBet.Data.Services
             //Add 3 next positions
             if(positions.Any(p => p.UserId == userId))
             {
-                var nextPositions = _thermoBetContext
-                .Users
-                .Where(u => u.GlobalPoints > 0)
-                .OrderByDescending(u => u.GlobalPoints)
+                var nextPositions = users
                 .Select((u, i) => new { User = u, Index = i })
                 .Skip(3)
                 .Take(3)
@@ -76,29 +77,28 @@ namespace ThermoBet.Data.Services
             }
             else
             {
-                var userPosition = _thermoBetContext
-                .Users
-                .Where(u => u.GlobalPoints > 0)
-                .OrderByDescending(u => u.GlobalPoints)
+                var user = users
                 .Select((u, i) => new { UserId = u.Id, Index = i })
-                .Single(u => u.UserId == userId)
-                .Index + 1;
+                .SingleOrDefault(u => u.UserId == userId);
 
-                var nextPositions = _thermoBetContext
-                .Users
-                .OrderByDescending(u => u.GlobalPoints)
-                .Select((u, i) => new { User = u, Index = i })
-                .Skip(userPosition == 4 ? 3 : (userPosition - 2))
-                .Take(3)
-                .Select(u => new StatsPositionModel
+                if (user != null)
                 {
-                    UserId = u.User.Id,
-                    Position = u.Index + 1,
-                    Pseudo = u.User.Pseudo ?? $"Joueur_{u.User.Id}",
-                    Score = u.User.GlobalPoints
-                })
-                .ToList();
-                positions.AddRange(nextPositions);
+                    var userPosition = user.Index + 1;
+
+                    var nextPositions = users
+                    .Select((u, i) => new { User = u, Index = i })
+                    .Skip(userPosition == 4 ? 3 : (userPosition - 2))
+                    .Take(3)
+                    .Select(u => new StatsPositionModel
+                    {
+                        UserId = u.User.Id,
+                        Position = u.Index + 1,
+                        Pseudo = u.User.Pseudo ?? $"Joueur_{u.User.Id}",
+                        Score = u.User.GlobalPoints
+                    })
+                    .ToList();
+                    positions.AddRange(nextPositions);
+                }
             }
 
             var stats = new StatsModel

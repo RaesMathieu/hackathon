@@ -28,11 +28,11 @@ namespace ThermoBet.API.Controllers
 
         [HttpGet("api/stats")]
         [Authorize(Roles = "User")]
-        public async Task<IEnumerable<Stats>> GetUserStats()
+        public async Task<Stats> GetUserStats()
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.Sid)?.Value);
             var stats = await _statsService.GetByUserIdAsync(userId);
-            var result = _mapper.Map<IEnumerable<Stats>>(stats);
+            var result = _mapper.Map<Stats>(stats);
 
             return result;
         }
