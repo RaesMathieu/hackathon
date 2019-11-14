@@ -36,7 +36,9 @@ namespace ThermoBet.API
             Bootstrap.Init.ConfigureServices(services, Configuration);
             services.AddAutoMapper(Assembly.GetAssembly(this.GetType()));
 
-            services.AddControllers();
+            services
+                .AddControllers()
+                .AddNewtonsoftJson();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>

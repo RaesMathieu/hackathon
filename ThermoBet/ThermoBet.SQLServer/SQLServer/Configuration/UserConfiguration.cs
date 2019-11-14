@@ -19,14 +19,26 @@ namespace ThermoBet.Data
                 .IsUnicode()
                 .IsRequired(true);
 
+            entityTypeBuilder.Property(c => c.Pseudo)
+                .HasMaxLength(50)
+                .IsUnicode()
+                .IsRequired(true);
+
+            entityTypeBuilder.Property(c => c.Avatar)
+                .HasMaxLength(50)
+                .IsUnicode()
+                .IsRequired(true);
+
             entityTypeBuilder.Property(c => c.HashPassword)
                 .HasMaxLength(32)
                 .IsRequired(true);
 
             entityTypeBuilder
-                .HasIndex(c => new {c.Login, c.HashPassword})
+                .HasIndex(c => c.Login)
                 .IsUnique(true)
                 .HasFilter(null);
+
+
         }
     }
 }

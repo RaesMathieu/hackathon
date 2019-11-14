@@ -8,4 +8,8 @@ public interface IUserService
     Task<UserModel> GetByAsync(string login, string password);
 
     Task<UserModel> CreateAsync(string login, string password);
+
+    Task<UserModel> GetByAsync(int id);
+
+    Task UpdateAsync(UserModel user);
 }
