@@ -12,6 +12,7 @@ namespace ThermoBet.Data
     {
         public static void Initialize(ThermoBetContext context)
         {
+            context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
             //context.Database.Migrate();
 

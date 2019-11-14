@@ -22,12 +22,12 @@ namespace ThermoBet.Data
             entityTypeBuilder.Property(c => c.Pseudo)
                 .HasMaxLength(50)
                 .IsUnicode()
-                .IsRequired(true);
+                .IsRequired(false);
 
             entityTypeBuilder.Property(c => c.Avatar)
                 .HasMaxLength(50)
                 .IsUnicode()
-                .IsRequired(true);
+                .IsRequired(false);
 
             entityTypeBuilder.Property(c => c.HashPassword)
                 .HasMaxLength(32)
