@@ -1,0 +1,30 @@
+﻿@model ThermoBet.MVC.Models.AdministrationViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <h1 class="h3 mb-2 text-gray-800">DataTest</h1>
+        <br />
+
+        <a class="btn btn-danger" href="/Administration/ClearData/">Clear data</a>
+        <div class="my-2"></div>
+        <a class="btn btn-warning" href="/Administration/InsertTestData/">Insert test data</a>
+        <div class="my-2"></div>
+        <hr/>
+        <form id="form1" asp-controller="Administration" asp-action="DataTest" method="post">
+            <div class="form-group">
+                <label for="inputName">DateTime.UtcNow</label>
+                <input asp-for="DateTimeUtcNow" class="form-control">
+                <span asp-validation-for="DateTimeUtcNow" class="text text-danger"></span>
+            </div>
+            <div class="my-2"></div>
+            <div class="float-right">
+                <button name="button" class="btn btn-success" value="Save">Sauvegarder</button>
+            </div>
+
+        </form>
+    </div>
+

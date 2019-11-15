@@ -8,8 +8,6 @@ namespace ThermoBet.Data
     {
         public void Configure(EntityTypeBuilder<BetModel> entityTypeBuilder)
         {
-            entityTypeBuilder.ToTable("Bet");
-
             entityTypeBuilder
                 .HasKey(c => new { c.MarketId, c.TournamentId, c.UserId });
 

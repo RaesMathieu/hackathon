@@ -5,16 +5,21 @@ using ThermoBet.Core.Models;
 using ThermoBet.Data;
 using System.Linq;
 using System;
+using ThermoBet.Core.Interfaces;
 
 namespace ThermoBet.Data.Services
 {
     public class TournamentService : ITournamentService
     {
         private readonly ThermoBetContext _thermoBetContext;
+        private readonly IConfigurationService _configurationService;
 
-        public TournamentService(ThermoBetContext thermoBetContext)
+        public TournamentService(
+            ThermoBetContext thermoBetContext,
+            IConfigurationService configurationService)
         {
             _thermoBetContext = thermoBetContext;
+            this._configurationService = configurationService;
         }
 
         public async Task Update(TournamentModel tournament)
@@ -27,21 +32,24 @@ namespace ThermoBet.Data.Services
 
         public async Task<IEnumerable<TournamentModel>> GetCurrentsAsync()
         {
+            var dateTime = await _configurationService.GetDateTimeUtcNow();
             return await _thermoBetContext
                     .Tournaments
                     .Include(x => x.Markets)
                         .ThenInclude(market => market.Selections)
-                    .Where(x => x.StartTimeUtc <= DateTime.UtcNow && x.EndTimeUtc >= DateTime.UtcNow)
+                    .Where(x => x.StartTimeUtc <= dateTime && x.EndTimeUtc >= dateTime)
                     .ToListAsync();
         }
 
         public async Task<IEnumerable<TournamentModel>> GetAlreadyStartedAsync(int lastNumber)
         {
+            var dateTime = await _configurationService.GetDateTimeUtcNow();
+
             return await _thermoBetContext
                     .Tournaments
                     .Include(x => x.Markets)
                         .ThenInclude(market => market.Selections)
-                    .Where(x => x.StartTimeUtc <= DateTime.UtcNow)
+                    .Where(x => x.StartTimeUtc <= dateTime)
                     .OrderByDescending(x => x.StartTimeUtc)
                     .Take(lastNumber)
                     .ToListAsync();
@@ -74,6 +82,7 @@ namespace ThermoBet.Data.Services
 
         public async Task BetAsync(int userId, int tournamentId, int marketId, int selectionId)
         {
+            var dateTime = await _configurationService.GetDateTimeUtcNow();
             var user = await _thermoBetContext.
                     Users.SingleAsync(x => x.Id == userId);
 
@@ -87,13 +96,13 @@ namespace ThermoBet.Data.Services
             if (bets != null)
             {
                 bets.Selection = selection;
-                bets.DateUtc = DateTime.UtcNow;
+                bets.DateUtc = dateTime;
             }
             else
             {
                 await _thermoBetContext.Bets.AddAsync(new BetModel
                 {
-                    DateUtc = DateTime.UtcNow,
+                    DateUtc = dateTime,
                     MarketId = marketId,
                     TournamentId = tournamentId,
                     User = user,

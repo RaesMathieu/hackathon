@@ -1,8 +1,5 @@
-using ThermoBet.Data;
 using ThermoBet.Core.Models;
-using System;
 using System.Linq;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using ThermoBet.Data.Services;
 
@@ -12,90 +9,38 @@ namespace ThermoBet.Data
     {
         public static void Initialize(ThermoBetContext context)
         {
-            #if !DEBUG
-                //ClearData(context);
-            #endif
-            //context.Database.EnsureDeleted();
+            // Database creation if needed
             context.Database.EnsureCreated();
 
-            if (context.Tournaments.Any())
+            // Sure we have one admin user.
+            if (!context.Users.Any(x => x.IsAdmin == true))
             {
-                return;
+                context.Users.Add(new UserModel
+                {
+                    Login = "Admin",
+                    HashPassword = Encryptor.MD5Hash("P@ssword12345"),
+                    IsAdmin = true
+                });
+
+                context.SaveChanges();
             }
+        }
 
-            context.Tournaments.Add(new TournamentModel
-            {
-                Description = "",
-                EndTimeUtc = DateTime.Today.AddDays(1).ToUniversalTime(),
-                Name = "Salve de aujoutd'hui",
-                StartTimeUtc = DateTime.Today.ToUniversalTime(),
-                Markets = new List<MarketModel>() {
-                    new MarketModel {
-                        Name = "Lille vas t'il gagner le match se soir ?",
-                        Selections = new List<SelectionModel>() {
-                            new SelectionModel {
-                                Name = "Lille",
-                                IsYes = true
-                            },
-                            new SelectionModel {
-                                Name = "Valence",
-                                IsYes = false
-                            },
-                        }
-                    },
-                    new MarketModel {
-                        Name = "Benefica vas t'il gagner le match se soir ?",
-                        Selections = new List<SelectionModel>() {
-                            new SelectionModel {
-                                Name = "Benefica",
-                                IsYes = true
-                            },
-                            new SelectionModel {
-                                Name = "Lyon",
-                                IsYes = false
-                            },
-                        }
-                    }
-                }
+        public static void ClearData(ThermoBetContext context)
+        {
 
-            });
 
-            context.Tournaments.Add(new TournamentModel
-            {
-                Description = "",
-                EndTimeUtc = DateTime.Today.ToUniversalTime(),
-                Name = "Salve de hier",
-                StartTimeUtc = DateTime.Today.AddDays(-1).ToUniversalTime(),
-                Markets = new List<MarketModel>() {
-                    new MarketModel {
-                        Name = "Marseille vas t'il gagner le match se soir ?",
-                        Selections = new List<SelectionModel>() {
-                            new SelectionModel {
-                                Name = "Marseille",
-                                IsYes = true
-                            },
-                            new SelectionModel {
-                                Name = "Valence",
-                                IsYes = false
-                            },
-                        }
-                    },
-                    new MarketModel {
-                        Name = "Lyon vas t'il gagner le match se soir ?",
-                        Selections = new List<SelectionModel>() {
-                            new SelectionModel {
-                                Name = "Benefica",
-                                IsYes = true
-                            },
-                            new SelectionModel {
-                                Name = "Lyon",
-                                IsYes = false
-                            },
-                        }
-                    }
-                }
+            DropTable(context,
+                "Bet",
+                "Bets",
+                "Tournaments",
+                "Markets",
+                "Selections", 
+                "Users",
+                "LoginHistories",
+                "Configurations");
 
-            });
+            context.Database.EnsureCreated();
 
             context.Users.Add(new UserModel
             {
@@ -103,22 +48,16 @@ namespace ThermoBet.Data
                 HashPassword = Encryptor.MD5Hash("P@ssword12345"),
                 IsAdmin = true
             });
-            
+
             context.SaveChanges();
         }
 
-        private static void ClearData(ThermoBetContext context)
+        private static void DropTable(ThermoBetContext context, params string[] tableName)
         {
-            DropTable(context, "Bets");
-            DropTable(context, "Selections");
-            DropTable(context, "Markets");
-            DropTable(context, "Tournaments");
-            DropTable(context, "Users");
-        }
+            var allTables = string.Join(", ", tableName.Select(x => $@"`{x}`"));
 
-        private static void DropTable(ThermoBetContext context, string tableName)
-        {
-            context.Database.ExecuteSqlCommand($"DROP TABLE IF EXISTS {tableName}");
+            var query = $@"DROP TABLE IF EXISTS {allTables}";
+            context.Database.ExecuteSqlCommand(query);
         }
     }
 }

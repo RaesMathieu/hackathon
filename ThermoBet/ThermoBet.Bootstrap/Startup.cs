@@ -40,6 +40,10 @@ namespace ThermoBet.Bootstrap
             services.AddScoped<IDashboardService, DashboardService>();
             services.AddScoped<IAdminAuthentificationService, AdminAuthentificationService>();
             services.AddScoped<IStatsService, StatsService>();
+            services.AddScoped<IDataAdministrationService, DataAdministrationService>();
+            services.AddScoped<IConfigurationService, ConfigurationService>();
+
+
         }
     }
 }
