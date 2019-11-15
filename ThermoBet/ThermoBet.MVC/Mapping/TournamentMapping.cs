@@ -10,13 +10,22 @@ namespace ThermoBet.MVC.Mapping
         public TournamentMapping()
         {
             CreateMap<SelectionModel, SelectionViewModel>()
-            .ReverseMap();
+                .ReverseMap();
 
             CreateMap<MarketModel, MarketViewModel>()
-            .ReverseMap();
+                .ReverseMap();
 
             CreateMap<TournamentModel, TournamentViewModel>()
-            .ReverseMap();
+                .ReverseMap();
+
+            CreateMap<SelectionModel, ResultingSelectionViewModel>()
+                .ReverseMap();
+
+            CreateMap<MarketModel, ResultingMarketViewModel>()
+                .ReverseMap();
+
+            CreateMap<TournamentModel, ResultingTournamentViewModel>()
+                .ReverseMap();
 
         }
     }
