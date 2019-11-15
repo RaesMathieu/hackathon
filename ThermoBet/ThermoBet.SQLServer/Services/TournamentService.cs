@@ -66,11 +66,17 @@ namespace ThermoBet.Data.Services
 
         public async Task<TournamentModel> GetAsync(int id)
         {
-            return await _thermoBetContext
+            var tournament = await _thermoBetContext
                     .Tournaments
                     .Include(x => x.Markets)
                         .ThenInclude(market => market.Selections)
                     .FirstAsync(x => x.Id == id);
+
+            tournament.Markets = tournament.Markets.OrderBy(x => x.Id).ToList();
+            foreach (var market in tournament.Markets)
+                market.Selections = market.Selections.OrderBy(x => x.Id).ToList();
+
+            return tournament;
         }
 
         public IQueryable<TournamentModel> GetAll()
