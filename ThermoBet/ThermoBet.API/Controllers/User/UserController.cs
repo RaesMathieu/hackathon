@@ -93,5 +93,46 @@ namespace ThermoBet.API.Controllers
             }
 
         }
+
+        /// <summary>
+        /// Update user detail
+        /// </summary>
+        /// <returns></returns>
+        [HttpPatch("api/user/forAndroid/")]
+        [Authorize(Roles = "User")]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(UserResponse))]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        [ProducesErrorResponseType(typeof(void))]
+        public async Task<ActionResult<UserResponse>> Update(UserRequest userRequest)
+        {
+            try
+            {
+                var userId = int.Parse(User.FindFirst(ClaimTypes.Sid)?.Value);
+
+                var user = await _userService.GetByAsync(userId);
+
+                if (!string.IsNullOrEmpty(userRequest.Avatar))
+                    user.Avatar = userRequest.Avatar;
+
+                if (!string.IsNullOrEmpty(userRequest.Pseudo))
+                    user.Pseudo = userRequest.Pseudo;
+
+                await _userService.UpdateAsync(user);
+
+                return Ok(new UserResponse
+                {
+                    Id = user.Id,
+                    UserName = user.Login,
+                    Avatar = user.Avatar,
+                    Pseudo = user.Pseudo
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
     }
 }
