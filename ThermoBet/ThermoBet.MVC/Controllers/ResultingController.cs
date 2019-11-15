@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ThermoBet.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
-using System.Linq.Expressions;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using AutoMapper;
 
 namespace ThermoBet.MVC.Controllers
@@ -49,12 +44,12 @@ namespace ThermoBet.MVC.Controllers
             {
                 return NotFound();
             }
-            return View(_mapper.Map<TournamentViewModel>(tournament));
+            return View(_mapper.Map<ResultingTournamentViewModel>(tournament));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, TournamentViewModel movie, string button)
+        public async Task<IActionResult> Edit(int id, ResultingTournamentViewModel movie, string button)
         {
             if (button == "Cancel")
                 return RedirectToAction(nameof(TournamentController.Index), nameof(TournamentController).Replace("Controller", ""));
