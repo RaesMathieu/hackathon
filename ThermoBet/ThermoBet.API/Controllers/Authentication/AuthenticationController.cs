@@ -80,6 +80,7 @@ namespace ThermoBet.API.Controllers
                   new Claim(ClaimTypes.Sid, user.Id.ToString()),
                   new Claim(ClaimTypes.Role, "User")
               },
+              expires: DateTime.Now.AddHours(12),
               signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
