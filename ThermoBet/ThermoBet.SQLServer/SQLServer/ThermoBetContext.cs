@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using ThermoBet.Core.Models;
+using ThermoBet.SQLServer.Models;
 
 namespace ThermoBet.Data
 {
@@ -14,6 +15,9 @@ namespace ThermoBet.Data
         public DbSet<UserModel> Users { get; set; }
         public DbSet<BetModel> Bets { get; set; }
         public DbSet<LoginHistoryModel> LoginHistories { get; set; }
+
+        public DbSet<ConfigurationModel> Configurations { get; set; }
+
 
 
         public ThermoBetContext(DbContextOptions<ThermoBetContext> options) : base(options)

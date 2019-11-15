@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using ThermoBet.Core.Interfaces;
 using ThermoBet.Core.Models;
 
 namespace ThermoBet.Data.Services
@@ -8,10 +9,14 @@ namespace ThermoBet.Data.Services
     public class UserService : IUserService
     {
         private readonly ThermoBetContext _thermoBetContext;
+        private readonly IConfigurationService _configurationService;
 
-        public UserService(ThermoBetContext thermoBetContext)
+        public UserService(
+            ThermoBetContext thermoBetContext,
+            IConfigurationService configurationService)
         {
             _thermoBetContext = thermoBetContext;
+            this._configurationService = configurationService;
         }
 
         public async Task<UserModel> CreateAsync(string login, string password)
@@ -58,12 +63,13 @@ namespace ThermoBet.Data.Services
 
         public async Task SigInAsync(UserModel user)
         {
+            var dateTime = await _configurationService.GetDateTimeUtcNow();
             _thermoBetContext
                     .LoginHistories
                     .Add(new LoginHistoryModel
                     {
                         User = user,
-                        LoginDateTimeUtc = DateTime.UtcNow
+                        LoginDateTimeUtc = dateTime
                     });
 
             await _thermoBetContext.SaveChangesAsync();
