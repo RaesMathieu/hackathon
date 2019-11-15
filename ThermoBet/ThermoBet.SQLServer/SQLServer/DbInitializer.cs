@@ -35,10 +35,12 @@ namespace ThermoBet.Data
                 "Bets",
                 "Tournaments",
                 "Markets",
-                "Selections", 
+                "Selections");
+
+            DropTable2(context,
+               "Configurations",
                 "Users",
-                "LoginHistories",
-                "Configurations");
+                "LoginHistories");
 
             context.Database.EnsureCreated();
 
@@ -54,9 +56,15 @@ namespace ThermoBet.Data
 
         private static void DropTable(ThermoBetContext context, params string[] tableName)
         {
-            var allTables = string.Join(", ", tableName.Select(x => $@"`{x}`"));
+            var allTables = string.Join(", ", tableName.Select(x => $@"{x}"));
+            var query = $@"SET FOREIGN_KEY_CHECKS=0; DROP TABLE IF EXISTS {allTables}; SET FOREIGN_KEY_CHECKS=1;";
+            context.Database.ExecuteSqlCommand(query);
+        }
 
-            var query = $@"DROP TABLE IF EXISTS {allTables}";
+        private static void DropTable2(ThermoBetContext context, params string[] tableName)
+        {
+            var allTables = string.Join(", ", tableName.Select(x => $@"{x}"));
+            var query = $@"SET FOREIGN_KEY_CHECKS=0; DROP TABLE IF EXISTS {allTables}; SET FOREIGN_KEY_CHECKS=1;";
             context.Database.ExecuteSqlCommand(query);
         }
     }

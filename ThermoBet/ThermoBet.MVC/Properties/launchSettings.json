@@ -2,10 +2,6 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
-    "iis": {
-      "applicationUrl": "http://localhost/ThermoBet.MVC",
-      "sslPort": 0
-    },
     "iisExpress": {
       "applicationUrl": "http://localhost:37522",
       "sslPort": 44383
@@ -22,10 +18,10 @@
     "ThermoBet.MVC": {
       "commandName": "Project",
       "launchBrowser": true,
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "https://localhost:5001;http://localhost:5000"
+      }
     }
   }
 }

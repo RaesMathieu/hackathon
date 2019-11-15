@@ -11,7 +11,12 @@ namespace ThermoBet.Data
             entityTypeBuilder
                 .HasKey(c => c.Key);
 
+            entityTypeBuilder.Property(c => c.Key)
+                .HasMaxLength(32)
+                .IsRequired(true);
+
             entityTypeBuilder.Property(c => c.Value)
+                .HasMaxLength(32)
                 .IsRequired(true);
         }
     }
