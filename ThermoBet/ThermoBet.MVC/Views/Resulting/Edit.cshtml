@@ -37,7 +37,7 @@
 
                         <label class="btn @cssClass @(isSelected ? "active" : "")">
                             <input type="hidden" asp-for="Markets[i].Selections[j].Id" />
-                            <input type="radio" asp-for="@Model.Markets[i].WinningSelectionId" value="@Model.Markets[i].Selections[j].Id" autocomplete="off"> @Model.Markets[i].Selections[j].Name
+                            <input type="radio" asp-for="@Model.Markets[i].WinningSelectionId" value="@Model.Markets[i].Selections[j].Id" autocomplete="off"> @(j==0 ? "Oui" : "Non")
                         </label>
                     }
                 </div>

@@ -13,16 +13,19 @@ namespace ThermoBet.MVC.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ITournamentService _tournamentService;
+        private readonly IStatsService _statsService;
         private readonly IMapper _mapper;
 
         public ResultingController(
             ILogger<HomeController> logger,
             ITournamentService tournamentService,
+            IStatsService statsService,
             IMapper mapper)
         {
             _logger = logger;
             _tournamentService = tournamentService;
             _mapper = mapper;
+            _statsService = statsService;
         }
 
         [Authorize(Roles = "Admin")]
@@ -70,6 +73,7 @@ namespace ThermoBet.MVC.Controllers
                     market.WinningSelectionId = result[market.Id];
 
                 await _tournamentService.Update(tournamentEdit);
+                await _statsService.Compute(tournamentEdit.Markets.SelectMany(m => m.Selections.Select(s => s.Id)));
 
                 return RedirectToAction(nameof(Index));
             }

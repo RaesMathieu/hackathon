@@ -20,11 +20,11 @@ namespace ThermoBet.Data.Services
         public async Task<StatsModel> GetByUserIdAsync(int userId)
         {
             var userBets = _thermoBetContext
-                    .Bets
-                    .Where(b => b.UserId == userId);
+                .Bets
+                .Where(b => b.UserId == userId);
             var succeedSwipesCount = _thermoBetContext
                 .Users
-                .SingleOrDefault(u => u.Id == userId)
+                .SingleOrDefault(u => u.Id == userId)?
                 .GlobalPoints;
 
             var winningsBets = userBets.Count(ub => ub.Market.WinningSelectionId == ub.Selection.Id);
@@ -35,13 +35,12 @@ namespace ThermoBet.Data.Services
                 UserId = userId,
                 AllSwipesCount = userBets.Count(),
                 MonthlySwipesCount = userBets.Where(b => b.DateUtc.AddMonths(1) > DateTime.UtcNow).Count(),
-                SucceedSwipesCount = succeedSwipesCount,
+                SucceedSwipesCount = succeedSwipesCount??0,
                 SucceedPercentage = resultedBetCount == 0 ? 0 : (int)((decimal)winningsBets / resultedBetCount * 100)
             };
 
             var users = (await _thermoBetContext
                 .Users
-                .Where(u => u.GlobalPoints > 0)
                 .OrderByDescending(u => u.GlobalPoints)
                 .ToListAsync());
 
@@ -49,13 +48,7 @@ namespace ThermoBet.Data.Services
             var positions = users
                 .Select((u, i) => new { User = u, Index = i })
                 .Take(3)
-                .Select(u => new StatsPositionModel
-                {
-                    UserId = u.User.Id,
-                    Position = u.Index + 1,
-                    Pseudo = u.User.Pseudo ?? $"Joueur_{u.User.Id}",
-                    Score = u.User.GlobalPoints
-                })
+                .Select(u => GetStatsPositionModel(u.User, u.Index + 1))
                 .ToList();
 
             //Add 3 next positions
@@ -65,13 +58,7 @@ namespace ThermoBet.Data.Services
                 .Select((u, i) => new { User = u, Index = i })
                 .Skip(3)
                 .Take(3)
-                .Select(u => new StatsPositionModel
-                {
-                    UserId = u.User.Id,
-                    Position = u.Index + 1,
-                    Pseudo = u.User.Pseudo ?? $"Joueur_{u.User.Id}",
-                    Score = u.User.GlobalPoints
-                })
+                .Select(u => GetStatsPositionModel(u.User, u.Index + 1))
                 .ToList();
                 positions.AddRange(nextPositions);
             }
@@ -89,13 +76,7 @@ namespace ThermoBet.Data.Services
                     .Select((u, i) => new { User = u, Index = i })
                     .Skip(userPosition == 4 ? 3 : (userPosition - 2))
                     .Take(3)
-                    .Select(u => new StatsPositionModel
-                    {
-                        UserId = u.User.Id,
-                        Position = u.Index + 1,
-                        Pseudo = u.User.Pseudo ?? $"Joueur_{u.User.Id}",
-                        Score = u.User.GlobalPoints
-                    })
+                    .Select(u => GetStatsPositionModel(u.User, u.Index + 1))
                     .ToList();
                     positions.AddRange(nextPositions);
                 }
@@ -108,6 +89,52 @@ namespace ThermoBet.Data.Services
             };
 
             return stats;
+        }
+
+        public async Task Compute(IEnumerable<int> selectionsIds)
+        {
+            var selections = _thermoBetContext.Selections
+                .Where(s => selectionsIds.Contains(s.Id))
+                .Include(s => s.Market)
+                .ToList();
+
+            foreach(var selection in selections)
+            {
+                var bets = _thermoBetContext.Bets.Where(b => b.Selection == selection).Include(b => b.User).ToList();
+                foreach(var bet in bets)
+                {
+                    var user = _thermoBetContext.Users.SingleOrDefault(u => u.Id == bet.User.Id);
+                    if(user != null)
+                    {
+                        if(bet.Selection.Id == selection.Market.WinningSelectionId)
+                        {
+                            //Winning bet
+                            user.CurrentPoints++;
+                        }
+                        else
+                        {
+                            user.CurrentPoints = 0;
+                        }
+
+                        if (user.GlobalPoints < user.CurrentPoints)
+                            user.GlobalPoints = user.CurrentPoints;
+                    }
+                }
+            }
+
+            await _thermoBetContext.SaveChangesAsync();
+        }
+
+        private StatsPositionModel GetStatsPositionModel(UserModel u, int position)
+        {
+            return new StatsPositionModel
+            {
+                UserId = u.Id,
+                Position = position,
+                Pseudo = u.Pseudo ?? $"Joueur_{u.Id}",
+                Score = u.GlobalPoints,
+                Avatar = u.Avatar
+            };
         }
     }
 }

@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -28,13 +30,21 @@ namespace ThermoBet.API.Controllers
 
         [HttpGet("api/stats")]
         [Authorize(Roles = "User")]
-        public async Task<Stats> GetUserStats()
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Stats))]
+        public async Task<ActionResult<Stats>> GetUserStats()
         {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.Sid)?.Value);
-            var stats = await _statsService.GetByUserIdAsync(userId);
-            var result = _mapper.Map<Stats>(stats);
+            try
+            {
+                var userId = int.Parse(User.FindFirst(ClaimTypes.Sid)?.Value);
+                var stats = await _statsService.GetByUserIdAsync(userId);
+                var result = _mapper.Map<Stats>(stats);
 
-            return result;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message + " " + ex.StackTrace);
+            }
         }
     }
 }

@@ -28,5 +28,11 @@ namespace ThermoBet.Data
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+            optionsBuilder.EnableDetailedErrors().EnableSensitiveDataLogging();
+        }
     }
 }
