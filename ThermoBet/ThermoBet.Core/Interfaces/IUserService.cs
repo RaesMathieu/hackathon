@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ThermoBet.Core.Models;
@@ -17,4 +15,6 @@ public interface IUserService
     Task UpdateAsync(UserModel user);
 
     IQueryable<UserModel> GetAllUsersAsync();
+
+    Task Update(UserModel user);
 }

@@ -5,9 +5,9 @@ using ThermoBet.MVC.Models;
 
 namespace ThermoBet.MVC.Mapping
 {
-    public class TournamentMapping : Profile
+    public class AutoMapperMapping : Profile
     {
-        public TournamentMapping()
+        public AutoMapperMapping()
         {
             CreateMap<SelectionModel, SelectionViewModel>()
                 .ReverseMap();
@@ -25,6 +25,9 @@ namespace ThermoBet.MVC.Mapping
                 .ReverseMap();
 
             CreateMap<TournamentModel, ResultingTournamentViewModel>()
+                .ReverseMap();
+
+            CreateMap<UserModel, UserViewModel>()
                 .ReverseMap();
 
         }

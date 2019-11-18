@@ -1,0 +1,33 @@
+﻿@model ThermoBet.MVC.Models.UserViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Edition d'un utilisateur</h1>
+    <br />
+
+
+
+    <form id="form1" asp-controller="User" asp-action="Edit" method="post">
+
+        @Html.EditorForModel()
+
+        <div class="form-group">
+            <hr />
+            <div class="float-right">
+                <button name="button" class="btn btn-success" value="Save">Sauvegarder</button>
+                <button name="button" class="btn btn-secondary" value="Cancel">Retour</button>
+            </div>
+
+
+
+        </div>
+    </form>
+
+
+</div>
