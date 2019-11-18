@@ -14,5 +14,7 @@ namespace ThermoBet.MVC.Models
         public virtual List<ResultingSelectionViewModel> Selections { get; set; }
 
         public virtual int? WinningSelectionId { get; set; }
+
+        public virtual int? ChosenSelectionId { get; set; }
     }
 }

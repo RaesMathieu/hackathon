@@ -119,7 +119,7 @@ namespace ThermoBet.API.Controllers
         /// <response code="500">Failed with internal server error</response>
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(void))]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized, Type = typeof(void))]
-        [ProducesResponseType((int)HttpStatusCode.RequestTimeout, Type = typeof(string))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(string))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(string))]
         [HttpPost("api/tournament/{tournamentId}/market/{marketId}/selection/{selectionId}")]
         [Authorize(Roles = "User")]
@@ -134,7 +134,7 @@ namespace ThermoBet.API.Controllers
             }
             catch (FinishedTournamentCoreException ex)
             {
-                return StatusCode((int)HttpStatusCode.RequestTimeout, "No bet can be take on this tournament.");
+                return StatusCode((int)HttpStatusCode.BadRequest, "No bet can be take on this tournament.");
             }
             catch (Exception ex)
             {
