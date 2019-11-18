@@ -267,7 +267,7 @@ namespace ThermoBet.SQLServer.Services
                     new MarketModel { Name = "Rennes gagne le match ?", Position = 1, StartTimeUtc = new DateTime(2019, 12, 12, 18, 55, 0).ToUniversalTime(),
                         Selections = new List<SelectionModel>() {
                             new SelectionModel { Name = "Stade Rennais ", IsYes = true,
-                                ImgUrl = " http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/rennes.png",
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/rennes.png",
                             },
                             new SelectionModel { Name = "Lazio Rome", IsYes = false,
                                 ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/lazio_fr.png",
@@ -277,7 +277,7 @@ namespace ThermoBet.SQLServer.Services
                     new MarketModel { Name = "Y aura t-il moins de 3 buts dans le match ?", Position = 2, StartTimeUtc = new DateTime(2019, 12, 12, 18, 55, 0).ToUniversalTime(),
                         Selections = new List<SelectionModel>() {
                             new SelectionModel { Name = "Stade Rennais ", IsYes = true,
-                                ImgUrl = " http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/rennes.png",
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/rennes.png",
                             },
                             new SelectionModel { Name = "Lazio Rome", IsYes = false,
                                 ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/lazio_fr.png",
@@ -287,7 +287,7 @@ namespace ThermoBet.SQLServer.Services
                     new MarketModel { Name = "Y aura t-il plus que 7 corners dans le match ?", Position = 3, StartTimeUtc = new DateTime(2019, 12, 12, 18, 55, 0).ToUniversalTime(),
                         Selections = new List<SelectionModel>() {
                             new SelectionModel { Name = "Stade Rennais ", IsYes = true,
-                                ImgUrl = " http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/rennes.png",
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/rennes.png",
                             },
                             new SelectionModel { Name = "Lazio Rome", IsYes = false,
                                 ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/lazio_fr.png",
@@ -297,7 +297,7 @@ namespace ThermoBet.SQLServer.Services
                     new MarketModel { Name = "But dans le temps additionnel (d’une des deux mi-temps) ?", Position = 4, StartTimeUtc = new DateTime(2019, 12, 12, 18, 55, 0).ToUniversalTime(),
                         Selections = new List<SelectionModel>() {
                             new SelectionModel { Name = "Stade Rennais ", IsYes = true,
-                                ImgUrl = " http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/rennes.png",
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/rennes.png",
                             },
                             new SelectionModel { Name = "Lazio Rome", IsYes = false,
                                 ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/lazio_fr.png",
@@ -307,7 +307,7 @@ namespace ThermoBet.SQLServer.Services
                     new MarketModel { Name = "Y aura t-il un doublé marqué dans le match ?", Position = 5, StartTimeUtc = new DateTime(2019, 12, 12, 18, 55, 0).ToUniversalTime(),
                         Selections = new List<SelectionModel>() {
                             new SelectionModel { Name = "Stade Rennais ", IsYes = true,
-                                ImgUrl = " http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/rennes.png",
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/rennes.png",
                             },
                             new SelectionModel { Name = "Lazio Rome", IsYes = false,
                                 ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/lazio_fr.png",
@@ -377,7 +377,7 @@ namespace ThermoBet.SQLServer.Services
                 StartTimeUtc = startDateTime,
                 EndTimeUtc = startDateTime.AddDays(1),
                 Markets = new List<MarketModel>() {
-                    new MarketModel { Name = "Rennes gagne le match ?", Position = 1, StartTimeUtc = new DateTime(2019, 12, 12, 20, 0, 0),
+                    new MarketModel { Name = "Lille gagne le match ?", Position = 1, StartTimeUtc = new DateTime(2019, 12, 12, 20, 0, 0),
                         Selections = new List<SelectionModel>() {
                             new SelectionModel { Name = "Lille", IsYes = true,
                                 ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/lille.png",
@@ -419,61 +419,61 @@ namespace ThermoBet.SQLServer.Services
                     },
                     new MarketModel { Name = "Y aura t-il plus que 6 corners dans le match ?", Position = 5, StartTimeUtc = new DateTime(2019, 12, 12, 20, 0, 0),
                         Selections = new List<SelectionModel>() {
-                            new SelectionModel { Name = "Stade Rennais ", IsYes = true,
-                                ImgUrl = " http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/rennes.png",
+                            new SelectionModel { Name = "Lille", IsYes = true,
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/lille.png",
                             },
-                            new SelectionModel { Name = "Lazio Rome", IsYes = false,
-                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/lazio_fr.png",
+                            new SelectionModel { Name = "Montpellier", IsYes = false,
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/montpellier.png",
                             },
                         }
                     },
                     new MarketModel { Name = "Y aura t-il un carton rouge ?", Position = 6, StartTimeUtc = new DateTime(2019, 12, 12, 20, 0, 0),
                         Selections = new List<SelectionModel>() {
-                            new SelectionModel { Name = "Wolfsburg", IsYes = true,
-                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/wolfsburg_fr.png",
+                            new SelectionModel { Name = "Lille", IsYes = true,
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/lille.png",
                             },
-                            new SelectionModel { Name = "Saint-Etienne", IsYes = false,
-                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/saintetienne.png",
+                            new SelectionModel { Name = "Montpellier", IsYes = false,
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/montpellier.png",
                             },
                         }
                     },
                     new MarketModel { Name = "Y aura t-il moins de 3 buts dans le match", Position = 7, StartTimeUtc = new DateTime(2019, 12, 12, 20, 0, 0),
                         Selections = new List<SelectionModel>() {
-                            new SelectionModel { Name = "Wolfsburg", IsYes = true,
-                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/wolfsburg_fr.png",
+                            new SelectionModel { Name = "Lille", IsYes = true,
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/lille.png",
                             },
-                            new SelectionModel { Name = "Saint-Etienne", IsYes = false,
-                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/saintetienne.png",
+                            new SelectionModel { Name = "Montpellier", IsYes = false,
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/montpellier.png",
                             },
                         }
                     },
                     new MarketModel { Name = "Un joueur de Lille marquera plus que toute l’équipe de Montpellier ?", Position = 8, StartTimeUtc = new DateTime(2019, 12, 12, 20, 0, 0),
                         Selections = new List<SelectionModel>() {
-                            new SelectionModel { Name = "Wolfsburg", IsYes = true,
-                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/wolfsburg_fr.png",
+                            new SelectionModel { Name = "Lille", IsYes = true,
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/lille.png",
                             },
-                            new SelectionModel { Name = "Saint-Etienne", IsYes = false,
-                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/saintetienne.png",
+                            new SelectionModel { Name = "Montpellier", IsYes = false,
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/montpellier.png",
                             },
                         }
                     },
                     new MarketModel { Name = "Y’aura til plus de 12 coups francs ?", Position = 9, StartTimeUtc = new DateTime(2019, 12, 12, 20, 0, 0),
                         Selections = new List<SelectionModel>() {
-                            new SelectionModel { Name = "Wolfsburg", IsYes = true,
-                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/wolfsburg_fr.png",
+                            new SelectionModel { Name = "Lille", IsYes = true,
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/lille.png",
                             },
-                            new SelectionModel { Name = "Saint-Etienne", IsYes = false,
-                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/saintetienne.png",
+                            new SelectionModel { Name = "Montpellier", IsYes = false,
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/montpellier.png",
                             },
                         }
                     },
                     new MarketModel { Name = "Y’aura-t-il un but refusé par le VAR ?", Position = 10, StartTimeUtc = new DateTime(2019, 12, 12, 20, 0, 0),
                         Selections = new List<SelectionModel>() {
-                            new SelectionModel { Name = "Wolfsburg", IsYes = true,
-                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/wolfsburg_fr.png",
+                            new SelectionModel { Name = "Lille", IsYes = true,
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/lille.png",
                             },
-                            new SelectionModel { Name = "Saint-Etienne", IsYes = false,
-                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/saintetienne.png",
+                            new SelectionModel { Name = "Montpellier", IsYes = false,
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/montpellier.png",
                             },
                         }
                     }
@@ -546,7 +546,7 @@ namespace ThermoBet.SQLServer.Services
                                 ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/angers.png",
                             },
                             new SelectionModel { Name = "Monaco", IsYes = false,
-                                ImgUrl = " http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/Monaco.png",
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/Monaco.png",
                             },
                         }
                     },
@@ -556,7 +556,7 @@ namespace ThermoBet.SQLServer.Services
                                 ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/angers.png",
                             },
                             new SelectionModel { Name = "Monaco", IsYes = false,
-                                ImgUrl = " http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/Monaco.png",
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/Monaco.png",
                             },
                         }
                     },
@@ -566,7 +566,7 @@ namespace ThermoBet.SQLServer.Services
                                 ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/angers.png",
                             },
                             new SelectionModel { Name = "Monaco", IsYes = false,
-                                ImgUrl = " http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/Monaco.png",
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/Monaco.png",
                             },
                         }
                     },
@@ -576,7 +576,7 @@ namespace ThermoBet.SQLServer.Services
                                 ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/angers.png",
                             },
                             new SelectionModel { Name = "Monaco", IsYes = false,
-                                ImgUrl = " http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/Monaco.png",
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/Monaco.png",
                             },
                         }
                     },
@@ -586,7 +586,7 @@ namespace ThermoBet.SQLServer.Services
                                 ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/angers.png",
                             },
                             new SelectionModel { Name = "Monaco", IsYes = false,
-                                ImgUrl = " http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/Monaco.png",
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/Monaco.png",
                             },
                         }
                     }
