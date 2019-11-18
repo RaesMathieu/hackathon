@@ -73,6 +73,7 @@ namespace ThermoBet.MVC.Controllers
             {
                 return NotFound();
             }
+
             return View(_mapper.Map<TournamentViewModel>(tournament));
         }
 
@@ -121,6 +122,10 @@ namespace ThermoBet.MVC.Controllers
             if (ModelState.IsValid)
             {
                 var tournament = _mapper.Map<Core.Models.TournamentModel>(movie);
+                int i = 0;
+                foreach (var market in tournament.Markets)
+                    market.Position = i++;
+
                 await _tournamentService.Update(tournament);
 
                 return RedirectToAction(nameof(Index));

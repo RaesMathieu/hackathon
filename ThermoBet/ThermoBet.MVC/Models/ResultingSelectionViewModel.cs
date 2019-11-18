@@ -12,5 +12,6 @@ namespace ThermoBet.MVC.Models
         [Display(Name = "Nom de la selection", Prompt = "Nom de la selection")]
         public string Name { get; set; }
 
+        public string ImgUrl { get; set; }
     }
 }
