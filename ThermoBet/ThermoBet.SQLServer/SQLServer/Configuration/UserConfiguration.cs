@@ -39,6 +39,11 @@ namespace ThermoBet.Data
                 .HasFilter(null);
 
             entityTypeBuilder
+                .HasIndex(c => c.Pseudo)
+                .IsUnique(true)
+                .HasFilter(null);
+
+            entityTypeBuilder
                 .HasMany(c => c.LoginDate)
                 .WithOne(c => c.User);
 

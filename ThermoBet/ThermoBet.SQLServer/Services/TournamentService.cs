@@ -122,7 +122,7 @@ namespace ThermoBet.Data.Services
 
             var tournament = await _thermoBetContext.Tournaments.SingleAsync(x => x.Id == tournamentId);
             if (!(tournament.StartTimeUtc < dateTime && tournament.EndTimeUtc > dateTime))
-                throw new FinishedTournamentException();
+                throw new FinishedTournamentCoreException();
 
             var selection = await _thermoBetContext.Selections.SingleAsync(x => x.Id == selectionId);
             if (bets != null)

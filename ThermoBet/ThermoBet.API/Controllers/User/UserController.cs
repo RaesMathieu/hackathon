@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using AutoMapper;
 using System.Net;
 using System;
+using ThermoBet.Core.Exception;
 
 namespace ThermoBet.API.Controllers
 {
@@ -48,10 +49,10 @@ namespace ThermoBet.API.Controllers
                     Avatar = user.Avatar,
                     Pseudo = user.Pseudo
                 });
-            } 
-            catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.ToString());
             }
         }
 
@@ -63,6 +64,7 @@ namespace ThermoBet.API.Controllers
         [HttpPatch("api/user/")]
         [Authorize(Roles = "User")]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(UserResponse))]
+        [ProducesResponseType((int)HttpStatusCode.NotAcceptable, Type = typeof(string))]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesErrorResponseType(typeof(void))]
@@ -87,7 +89,12 @@ namespace ThermoBet.API.Controllers
                     Avatar = user.Avatar,
                     Pseudo = user.Pseudo
                 });
-            } catch(Exception ex)
+            }
+            catch (UserPseudoAlreadyUsedCoreException)
+            {
+                return StatusCode((int)HttpStatusCode.NotAcceptable, "Pseudo already used");
+            }
+            catch (Exception ex)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
@@ -101,6 +108,7 @@ namespace ThermoBet.API.Controllers
         [HttpPatch("api/user/forAndroid/")]
         [Authorize(Roles = "User")]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(UserResponse))]
+        [ProducesResponseType((int)HttpStatusCode.NotAcceptable, Type = typeof(string))]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesErrorResponseType(typeof(void))]
@@ -120,6 +128,7 @@ namespace ThermoBet.API.Controllers
 
                 await _userService.UpdateAsync(user);
 
+
                 return Ok(new UserResponse
                 {
                     Id = user.Id,
@@ -128,9 +137,13 @@ namespace ThermoBet.API.Controllers
                     Pseudo = user.Pseudo
                 });
             }
+            catch (UserPseudoAlreadyUsedCoreException ex)
+            {
+                return StatusCode((int)HttpStatusCode.NotAcceptable, "Pseudo already used");
+            }
             catch (Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.ToString());
             }
 
         }
