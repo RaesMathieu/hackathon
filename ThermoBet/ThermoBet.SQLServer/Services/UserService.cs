@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using ThermoBet.Core.Exception;
 using ThermoBet.Core.Interfaces;
 using ThermoBet.Core.Models;
 
@@ -77,6 +78,15 @@ namespace ThermoBet.Data.Services
 
         public async Task UpdateAsync(UserModel user)
         {
+            if (!string.IsNullOrEmpty(user.Pseudo))
+            {
+                var pseudoAlreadyInUSer = await _thermoBetContext
+                        .Users
+                        .AnyAsync(x => x.Pseudo == user.Pseudo && x.Id != user.Id);
+                if (pseudoAlreadyInUSer)
+                    throw new UserPseudoAlreadyUsedCoreException();
+            }
+
             _thermoBetContext
                     .Users
                     .Update(user);

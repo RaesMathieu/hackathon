@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Security.Claims;
+using ThermoBet.Core.Exception;
+using System;
+using System.Net;
 
 namespace ThermoBet.API.Controllers
 {
@@ -27,30 +30,65 @@ namespace ThermoBet.API.Controllers
             _logger.LogInformation("TestController");
         }
 
+        /// <summary>
+        /// Get actives tournaments
+        /// </summary>
+        /// <returns></returns>
+        /// <response code="200">Success</response>
+        /// <response code="401">Not logged</response>
+        /// <response code="500">Failed with internal server error</response>
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(IEnumerable<TournamentReponse>))]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized, Type = typeof(void))]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(string))]
         [HttpGet("api/tournaments")]
         [Authorize(Roles = "User")]
-        public async Task<IEnumerable<TournamentReponse>> GetAsync()
+        public async Task<ActionResult<IEnumerable<TournamentReponse>>> GetAsync()
         {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.Sid)?.Value);
-            var tournaments = await _tournamentService.GetCurrentsAsync();
-            var result = _mapper.Map<IEnumerable<TournamentReponse>>(tournaments);
+            try
+            {
+                var userId = int.Parse(User.FindFirst(ClaimTypes.Sid)?.Value);
+                var tournaments = await _tournamentService.GetCurrentsAsync();
+                var result = _mapper.Map<IEnumerable<TournamentReponse>>(tournaments);
 
-            await MapUserBetAndWinningSelection(userId, result);
+                await MapUserBetAndWinningSelection(userId, result);
 
-            return result;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.ToString());
+            }
         }
 
+        /// <summary>
+        /// Get the last x trounament activate or activated
+        /// </summary>
+        /// <param name="number">number of tournament to get back</param>
+        /// <returns></returns>
+        /// <response code="200">Success</response>
+        /// <response code="401">Not logged</response>
+        /// <response code="500">Failed with internal server error</response>
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(IEnumerable<TournamentReponse>))]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized, Type = typeof(void))]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(string))]
         [HttpGet("api/tournaments/last/{number}")]
         [Authorize(Roles = "User")]
-        public async Task<IEnumerable<TournamentReponse>> GetRankingAsync(int number)
+        public async Task<ActionResult<IEnumerable<TournamentReponse>>> GetRankingAsync(int number)
         {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.Sid)?.Value);
-            var tournaments = await _tournamentService.GetAlreadyStartedAsync(number);
-            var result = _mapper.Map<IEnumerable<TournamentReponse>>(tournaments);
+            try
+            {
+                var userId = int.Parse(User.FindFirst(ClaimTypes.Sid)?.Value);
+                var tournaments = await _tournamentService.GetAlreadyStartedAsync(number);
+                var result = _mapper.Map<IEnumerable<TournamentReponse>>(tournaments);
 
-            await MapUserBetAndWinningSelection(userId, result);
+                await MapUserBetAndWinningSelection(userId, result);
 
-            return result;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.ToString());
+            }
         }
 
         private async Task MapUserBetAndWinningSelection(int userId, IEnumerable<TournamentReponse> result)
@@ -68,12 +106,40 @@ namespace ThermoBet.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Bet on a tournament
+        /// </summary>
+        /// <param name="marketId">identifier of the market</param>
+        /// <param name="selectionId">identifier of the Selection</param>
+        /// <param name="tournamentId">identifier of the tournament</param>
+        /// <returns></returns>
+        /// <response code="200">Bet success</response>
+        /// <response code="401">no logged</response>
+        /// <response code="408">No bet can be take on this tournament</response>
+        /// <response code="500">Failed with internal server error</response>
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(void))]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized, Type = typeof(void))]
+        [ProducesResponseType((int)HttpStatusCode.RequestTimeout, Type = typeof(string))]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(string))]
         [HttpPost("api/tournament/{tournamentId}/market/{marketId}/selection/{selectionId}")]
         [Authorize(Roles = "User")]
-        public async Task BetAsync([FromRoute] int tournamentId, [FromRoute] int marketId, [FromRoute] int selectionId)
+        public async Task<ActionResult> BetAsync([FromRoute] int tournamentId, [FromRoute] int marketId, [FromRoute] int selectionId)
         {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.Sid)?.Value);
-            await _tournamentService.BetAsync(userId, tournamentId, marketId, selectionId);
+            try
+            {
+                var userId = int.Parse(User.FindFirst(ClaimTypes.Sid)?.Value);
+                await _tournamentService.BetAsync(userId, tournamentId, marketId, selectionId);
+
+                return Ok();
+            }
+            catch (FinishedTournamentCoreException ex)
+            {
+                return StatusCode((int)HttpStatusCode.RequestTimeout, "No bet can be take on this tournament.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.ToString());
+            }
         }
     }
 }
