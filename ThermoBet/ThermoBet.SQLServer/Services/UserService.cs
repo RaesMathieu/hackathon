@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ThermoBet.Core.Exception;
@@ -94,5 +96,13 @@ namespace ThermoBet.Data.Services
             await _thermoBetContext.SaveChangesAsync();
         }
 
+        public IQueryable<UserModel> GetAllUsersAsync()
+        {
+            var users = _thermoBetContext
+                    .Users
+                    .Where(x => x.IsAdmin == false);
+
+            return users;
+        }
     }
 }
