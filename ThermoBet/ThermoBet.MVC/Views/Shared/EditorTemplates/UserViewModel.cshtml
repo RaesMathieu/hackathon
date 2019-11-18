@@ -1,0 +1,33 @@
+@model ThermoBet.MVC.Models.UserViewModel
+
+<input type="hidden" asp-for="Id" />
+<div class="form-group">
+    <label for="inputName">Login</label>
+    <input asp-for="Login" class="form-control">
+    <span asp-validation-for="Login" class="text text-danger"></span>
+</div>
+<div class="form-group">
+    <label for="inputName">Pseudo</label>
+    <input asp-for="Pseudo" class="form-control">
+    <span asp-validation-for="Pseudo" class="text text-danger"></span>
+</div>
+<div class="form-group">
+    <label for="inputName">Avatar</label>
+    <input asp-for="Avatar" class="form-control">
+    <span asp-validation-for="Avatar" class="text text-danger"></span>
+</div>
+<div class="form-group">
+    <label for="inputName">HashPassword</label>
+    <input asp-for="HashPassword" class="form-control">
+    <span asp-validation-for="HashPassword" class="text text-danger"></span>
+</div>
+<div class="form-group">
+    <label for="inputName">GlobalPoints</label>
+    <input asp-for="GlobalPoints" class="form-control">
+    <span asp-validation-for="GlobalPoints" class="text text-danger"></span>
+</div>
+<div class="form-group">
+    <label for="inputName">CurrentPoints</label>
+    <input asp-for="CurrentPoints" class="form-control">
+    <span asp-validation-for="CurrentPoints" class="text text-danger"></span>
+</div>

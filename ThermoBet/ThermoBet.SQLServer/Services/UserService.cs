@@ -104,5 +104,14 @@ namespace ThermoBet.Data.Services
 
             return users;
         }
+
+        public async Task Update(UserModel user)
+        {
+            _thermoBetContext
+                    .Users
+                    .Update(user);
+
+            await _thermoBetContext.SaveChangesAsync();
+        }
     }
 }

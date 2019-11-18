@@ -21,6 +21,7 @@
                     <th>Avatar</th>
                     <th>GlobalPoints</th>
                     <th>CurrentPoints</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
         </table>
@@ -46,6 +47,10 @@
                     "targets": [0],
                     "visible": false,
                     "searchable": false
+                },{
+                    "targets": [6],
+                    "orderable": false,
+                    "searchable": false
                 }],
                 "columns": [
                     { "data": "id", "name": "Id", "autoWidth": true },
@@ -53,7 +58,13 @@
                     { "data": "pseudo", "name": "Pseudo", "autoWidth": true },
                     { "data": "avatar", "name": "Avatar", "autoWidth": true },
                     { "data": "globalPoints", "name": "GlobalPoints", "autoWidth": true },
-                    { "data": "currentPoints", "name": "CurrentPoints", "autoWidth": true }
+                    { "data": "currentPoints", "name": "CurrentPoints", "autoWidth": true },
+                    {
+                        "render": function (data, type, full, meta)
+                        {
+                            return '<a class="btn btn-info" href="/User/Edit/' + full.id + '">Edit</a>';
+                        }
+                    }
                 ]
 
             });

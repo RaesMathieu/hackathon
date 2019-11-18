@@ -37,27 +37,44 @@ namespace ThermoBet.MVC.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult Add()
+        public async Task<IActionResult> Edit(int? id)
         {
-            var tournament = new Core.Models.TournamentModel
+            if (id == null)
             {
-                Markets = new List<Core.Models.MarketModel>{
-                    new Core.Models.MarketModel {
-                        Selections = new List<Core.Models.SelectionModel> {
-                            new Core.Models.SelectionModel()
-                            {
-                                IsYes = true
-                            },
-                            new Core.Models.SelectionModel()
-                            {
-                                IsYes = false
-                            }
-                        }
-                    }
-                }
-            };
+                return NotFound();
+            }
 
-            return View("Edit", _mapper.Map<TournamentViewModel>(tournament));
+            var user = await _userService.GetByAsync(id.Value);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(_mapper.Map<UserViewModel>(user));
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, UserViewModel movie, string button)
+        {
+            if (button == "Cancel")
+                return RedirectToAction(nameof(Index));
+
+            if (id != movie.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                var user = _mapper.Map<Core.Models.UserModel>(movie);
+
+                await _userService.Update(user);
+
+                return RedirectToAction(nameof(Index));
+            }
+            return View(movie);
         }
 
         public IActionResult LoadData()
