@@ -546,7 +546,7 @@ namespace ThermoBet.SQLServer.Services
                                 ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/angers.png",
                             },
                             new SelectionModel { Name = "Monaco", IsYes = false,
-                                ImgUrl = " http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/Monaco.png",
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/Monaco.png",
                             },
                         }
                     },
@@ -556,7 +556,7 @@ namespace ThermoBet.SQLServer.Services
                                 ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/angers.png",
                             },
                             new SelectionModel { Name = "Monaco", IsYes = false,
-                                ImgUrl = " http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/Monaco.png",
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/Monaco.png",
                             },
                         }
                     },
@@ -566,7 +566,7 @@ namespace ThermoBet.SQLServer.Services
                                 ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/angers.png",
                             },
                             new SelectionModel { Name = "Monaco", IsYes = false,
-                                ImgUrl = " http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/Monaco.png",
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/Monaco.png",
                             },
                         }
                     },
@@ -576,7 +576,7 @@ namespace ThermoBet.SQLServer.Services
                                 ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/angers.png",
                             },
                             new SelectionModel { Name = "Monaco", IsYes = false,
-                                ImgUrl = " http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/Monaco.png",
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/Monaco.png",
                             },
                         }
                     },
@@ -586,7 +586,7 @@ namespace ThermoBet.SQLServer.Services
                                 ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/angers.png",
                             },
                             new SelectionModel { Name = "Monaco", IsYes = false,
-                                ImgUrl = " http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/Monaco.png",
+                                ImgUrl = "http://img.cdn.betclic.com/img2/common/creas/footballFlags/png/Monaco.png",
                             },
                         }
                     }

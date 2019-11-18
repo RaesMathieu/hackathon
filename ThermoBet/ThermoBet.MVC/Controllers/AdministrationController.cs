@@ -5,6 +5,7 @@ using ThermoBet.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
 using ThermoBet.Core.Interfaces;
 using System.Threading.Tasks;
+using System;
 
 namespace ThermoBet.MVC.Controllers
 {
@@ -27,9 +28,12 @@ namespace ThermoBet.MVC.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DataTest()
         {
+            DateTime dateTime = await _configurationService.GetDateTimeUtcNow();
             return View(new AdministrationViewModel
             {
-                DateTimeUtcNow = await _configurationService.GetDateTimeUtcNow()
+                DateTimeUtcNow = new DateTime(
+                    dateTime.Ticks - (dateTime.Ticks % TimeSpan.TicksPerMinute),
+                    dateTime.Kind)
             });
         }
         [HttpPost]
