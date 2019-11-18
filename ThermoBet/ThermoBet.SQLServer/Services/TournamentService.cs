@@ -6,6 +6,7 @@ using ThermoBet.Data;
 using System.Linq;
 using System;
 using ThermoBet.Core.Interfaces;
+using ThermoBet.Core.Exception;
 
 namespace ThermoBet.Data.Services
 {
@@ -33,19 +34,24 @@ namespace ThermoBet.Data.Services
         public async Task<IEnumerable<TournamentModel>> GetCurrentsAsync()
         {
             var dateTime = await _configurationService.GetDateTimeUtcNow();
-            return await _thermoBetContext
+            var tounaments = await _thermoBetContext
                     .Tournaments
                     .Include(x => x.Markets)
                         .ThenInclude(market => market.Selections)
                     .Where(x => x.StartTimeUtc <= dateTime && x.EndTimeUtc >= dateTime)
                     .ToListAsync();
+
+            foreach (var tournament in tounaments)
+                ReorderMarketSelection(tournament);
+
+            return tounaments;
         }
 
         public async Task<IEnumerable<TournamentModel>> GetAlreadyStartedAsync(int lastNumber)
         {
             var dateTime = await _configurationService.GetDateTimeUtcNow();
 
-            return await _thermoBetContext
+            var tounaments = await _thermoBetContext
                     .Tournaments
                     .Include(x => x.Markets)
                         .ThenInclude(market => market.Selections)
@@ -53,24 +59,46 @@ namespace ThermoBet.Data.Services
                     .OrderByDescending(x => x.StartTimeUtc)
                     .Take(lastNumber)
                     .ToListAsync();
+
+            foreach (var tournament in tounaments)
+                ReorderMarketSelection(tournament);
+
+            return tounaments;
         }
 
         public async Task<IEnumerable<TournamentModel>> GetAllAsync()
         {
-            return await _thermoBetContext
+            var tounaments = await _thermoBetContext
                     .Tournaments
                     .Include(x => x.Markets)
                         .ThenInclude(market => market.Selections)
                     .ToListAsync();
+
+            foreach(var tournament in tounaments)
+                ReorderMarketSelection(tournament);
+
+            return tounaments;
         }
 
         public async Task<TournamentModel> GetAsync(int id)
         {
-            return await _thermoBetContext
+            var tournament = await _thermoBetContext
                     .Tournaments
                     .Include(x => x.Markets)
                         .ThenInclude(market => market.Selections)
                     .FirstAsync(x => x.Id == id);
+
+            ReorderMarketSelection(tournament);
+            return tournament;
+        }
+
+
+        private void ReorderMarketSelection(TournamentModel tournament)
+        {
+            tournament.Markets = tournament.Markets.OrderBy(x => x.Position).ToList();
+            foreach (var market in tournament.Markets)
+                market.Selections = market.Selections.OrderByDescending(x => x.IsYes).ToList();
+
         }
 
         public IQueryable<TournamentModel> GetAll()
@@ -91,6 +119,10 @@ namespace ThermoBet.Data.Services
                 .Query()
                 .Where(x => x.Tournament.Id == tournamentId && x.Market.Id == marketId)
                 .SingleOrDefaultAsync();
+
+            var tournament = await _thermoBetContext.Tournaments.SingleAsync(x => x.Id == tournamentId);
+            if (!(tournament.StartTimeUtc < dateTime && tournament.EndTimeUtc > dateTime))
+                throw new FinishedTournamentException();
 
             var selection = await _thermoBetContext.Selections.SingleAsync(x => x.Id == selectionId);
             if (bets != null)
