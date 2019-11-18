@@ -2,11 +2,8 @@
 
 <input type="hidden" asp-for="Id" />
 <input type="hidden" asp-for="IsYes" />
-@{
-    var cssClass = Model.IsYes ? "border-success" : "border-danger";
-}
 <div class="col">
-    <div class="card mb-3 @cssClass">
+    <div class="card mb-3">
         <div class="card-header">
             <input asp-for="Name" class="form-control">
             <span asp-validation-for="Name" class="text text-danger"></span>
