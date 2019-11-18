@@ -18,15 +18,18 @@ namespace ThermoBet.MVC.Controllers
     {
         private readonly ILogger<UserController> _logger;
         private readonly IUserService _userService;
+        private readonly ITournamentService _tournamentService;
         private readonly IMapper _mapper;
 
         public UserController(
             ILogger<UserController> logger,
             IUserService userService,
+            ITournamentService tournamentService,
             IMapper mapper)
         {
             _logger = logger;
             _userService = userService;
+            _tournamentService = tournamentService;
             _mapper = mapper;
         }
 
@@ -75,6 +78,31 @@ namespace ThermoBet.MVC.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(movie);
+        }
+
+        [HttpGet("User/{userId}/SeeResult/{tournamentId}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> SeeResult(int? userId, int? tournamentId)
+        {
+            if (userId == null || tournamentId == null)
+            {
+                return NotFound();
+            }
+
+            var tournament = await _tournamentService.GetAsync(tournamentId.Value);
+            if (tournament == null)
+            {
+                return NotFound();
+            }
+            var resultingTournamentViewModel = _mapper.Map<ResultingTournamentViewModel>(tournament);
+            var bets = await _tournamentService.GetBetAsync(userId.Value, tournament.Id);
+
+            foreach (var market in resultingTournamentViewModel.Markets)
+            {
+                market.ChosenSelectionId = bets.FirstOrDefault(s => s.Market.Id == market.Id)?.Selection?.Id;
+            }
+
+            return View(_mapper.Map<ResultingTournamentViewModel>(resultingTournamentViewModel));
         }
 
         public IActionResult LoadData()

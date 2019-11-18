@@ -1,0 +1,57 @@
+﻿@model ThermoBet.MVC.Models.ResultingTournamentViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Edition d'un tournament</h1>
+
+
+
+    <form id="form1" asp-controller="Resulting" asp-action="Edit" method="post">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label for="inputName">Name</label>
+            <input asp-for="Name" class="form-control" readonly>
+            <span asp-validation-for="Name" class="text text-danger"></span>
+        </div>
+
+        @for (int i = 0; i < Model.Markets.Count; i++)
+        {
+            <input type="hidden" asp-for="Markets[i].Id" />
+            <div class="form-group">
+                <hr />
+                <label for="inputName">Name</label>
+                <input asp-for="Markets[i].Name" class="form-control" readonly>
+                <br />
+                <div class="btn-group btn-group-toggle w-50 p-3" data-toggle="buttons">
+                    @for (int j = 0; j < Model.Markets[i].Selections.Count; j++)
+                    {
+                        var cssClass = @Model.Markets[i].Selections[j].IsYes ? "btn-outline-success" : "btn-outline-danger";
+                        var isSelected = @Model.Markets[i].WinningSelectionId.HasValue && @Model.Markets[i].Selections[j].Id == @Model.Markets[i].WinningSelectionId.Value;
+
+                        <label class="btn @cssClass @(isSelected ? "active" : "") ">
+                            <input type="radio" asp-for="@Model.Markets[i].WinningSelectionId" value="@Model.Markets[i].Selections[j].Id" autocomplete="off" disabled> @Model.Markets[i].Selections[j].Name
+
+                            <br />
+                            <img src="@Model.Markets[i].Selections[j].ImgUrl" class="img-fluid" alt="Responsive image" style="width: 50px; height: 50px;">
+                            <br />
+                            @if (@Model.Markets[i].ChosenSelectionId == @Model.Markets[i].Selections[j].Id)
+                            {
+                                <span class="badge badge-dark">Choix de l'utilisateur</span>
+                            }
+                        </label>
+                    }
+                </div>
+            </div>
+
+        }
+    </form>
+
+
+</div>
