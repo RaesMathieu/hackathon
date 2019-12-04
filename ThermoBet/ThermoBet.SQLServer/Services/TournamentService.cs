@@ -51,19 +51,29 @@ namespace ThermoBet.Data.Services
         {
             var dateTime = await _configurationService.GetDateTimeUtcNow();
 
-            var tounaments = await _thermoBetContext
+            var tournaments = await _thermoBetContext
                     .Tournaments
                     .Include(x => x.Markets)
                         .ThenInclude(market => market.Selections)
                     .Where(x => x.StartTimeUtc <= dateTime)
                     .OrderByDescending(x => x.StartTimeUtc)
-                    .Take(lastNumber)
+                    .Take(lastNumber == 2 ? 10 : lastNumber)
                     .ToListAsync();
 
-            foreach (var tournament in tounaments)
+            foreach (var tournament in tournaments)
                 ReorderMarketSelection(tournament);
 
-            return tounaments;
+            //In case we need only 2 tournaments, we want to fake data and add all markets after 2nd
+            //into 2nd one
+            if(lastNumber == 2 && tournaments.Count > 2)
+            {
+                foreach (var tournament in tournaments.Skip(2))
+                {
+                    tournament.Markets.ToList().ForEach(m => tournaments[1].Markets.Add(m));
+                }
+            }
+
+            return tournaments.Take(lastNumber);
         }
 
         public async Task<IEnumerable<TournamentModel>> GetAllAsync()
