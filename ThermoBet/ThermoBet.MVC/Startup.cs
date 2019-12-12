@@ -14,6 +14,9 @@ using System.Text.Json;
 using System.Diagnostics;
 using AutoMapper;
 using System.Reflection;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace ThermoBet.MVC
 {
@@ -50,6 +53,18 @@ namespace ThermoBet.MVC
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            var provider = new FileExtensionContentTypeProvider();
+            provider.Mappings.Add(".apk", "application/octect-stream");
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")),
+                RequestPath = "/apk",
+                ContentTypeProvider = provider,
+                OnPrepareResponse = context =>
+                {
+                    context.Context.Response.Headers["Content-Disposition"] = "attachment";
+                }
+            });
 
             app.UseRouting();
 

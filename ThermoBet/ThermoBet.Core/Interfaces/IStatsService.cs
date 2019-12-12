@@ -4,6 +4,7 @@ using ThermoBet.Core.Models;
 
 public interface IStatsService
 {
-    Task<StatsModel> GetByUserIdAsync(int userId);
-    Task Compute(IEnumerable<int> selectionsIds);
+    Task<StatsModel> GetByUserIdAsync(int userId, bool fixBugIssue = true);
+    Task Compute(int tournamentId, bool fixBugIssue = true);
+    void ResetPoints();
 }

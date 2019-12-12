@@ -21,4 +21,8 @@ public interface ITournamentService
     Task<IEnumerable<BetModel>> GetBetAsync(int userId, int tournamentId);
 
     Task<IEnumerable<TournamentModel>> GetAlreadyStartedAsync(int lastNumber);
+
+    Task<IEnumerable<BetModel>> GetAllBets(int tournamentId);
+
+    Task<IEnumerable<BetModel>> GetBetFakeTournamentsAsync(int userId, DateTime maxDate);
 }

@@ -5,6 +5,10 @@
     <UseNETCoreGenerator>true</UseNETCoreGenerator>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\bet_de_journee.apk" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <ProjectReference Include="..\ThermoBet.Bootstrap\ThermoBet.Bootstrap.csproj" />
@@ -23,6 +27,15 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\bet_de_journee.apk">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\bet_de_journee_release_en.apk">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

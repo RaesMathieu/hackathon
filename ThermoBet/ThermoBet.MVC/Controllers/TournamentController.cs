@@ -19,21 +19,50 @@ namespace ThermoBet.MVC.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ITournamentService _tournamentService;
         private readonly IMapper _mapper;
+        private readonly IStatsService _ss;
 
         public TournamentController(
             ILogger<HomeController> logger,
             ITournamentService tournamentService,
-            IMapper mapper)
+            IMapper mapper,
+            IStatsService ss)
         {
             _logger = logger;
             _tournamentService = tournamentService;
             _mapper = mapper;
+            _ss = ss;
         }
 
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet("Tournament/Results/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Results(int id)
+        {
+            var bets = await _tournamentService.GetAllBets(id);
+            return View(new AllResultsViewModel
+            {
+                Results = bets.Select(b => new ResultViewModel
+                {
+                    BetDate = b.DateUtc,
+                    UserId = b.UserId,
+                    Pseudo = b.User?.Pseudo,
+                    ChosenSelectionId = b.Selection?.Id,
+                    WinningSelectionId = b.Market?.WinningSelectionId
+                }).ToList()
+            });
+        }
+
+        [HttpGet("Tournament/ResetPoints")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult ResetPoints()
+        {
+            _ss.ResetPoints();
+            return new OkResult();
         }
 
         [Authorize(Roles = "Admin")]

@@ -52,20 +52,20 @@ namespace ThermoBet.MVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, ResultingTournamentViewModel movie, string button)
+        public async Task<IActionResult> Edit(int id, ResultingTournamentViewModel tournamentToEdit, string button)
         {
             if (button == "Cancel")
                 return RedirectToAction(nameof(TournamentController.Index), nameof(TournamentController).Replace("Controller", ""));
 
-            if (id != movie.Id)
+            if (id != tournamentToEdit.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                var tournament = _mapper.Map<Core.Models.TournamentModel>(movie);
-                var tournamentEdit = await _tournamentService.GetAsync(movie.Id);
+                var tournament = _mapper.Map<Core.Models.TournamentModel>(tournamentToEdit);
+                var tournamentEdit = await _tournamentService.GetAsync(tournamentToEdit.Id);
 
                 var result = tournament.Markets.ToDictionary(x => x.Id, x => x.WinningSelectionId);
 
@@ -73,11 +73,11 @@ namespace ThermoBet.MVC.Controllers
                     market.WinningSelectionId = result[market.Id];
 
                 await _tournamentService.Update(tournamentEdit);
-                await _statsService.Compute(tournamentEdit.Markets.SelectMany(m => m.Selections.Select(s => s.Id)));
+                await _statsService.Compute(tournamentToEdit.Id);
 
                 return RedirectToAction(nameof(Index));
             }
-            return View(movie);
+            return View(tournamentToEdit);
         }
 
         public IActionResult Privacy()

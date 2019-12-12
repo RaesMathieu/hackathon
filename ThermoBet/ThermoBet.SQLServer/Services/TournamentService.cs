@@ -171,5 +171,36 @@ namespace ThermoBet.Data.Services
 
             return bets;
         }
+
+        public async Task<IEnumerable<BetModel>> GetBetFakeTournamentsAsync(int userId, DateTime maxDate)
+        {
+            var user = await _thermoBetContext.
+                    Users.SingleAsync(x => x.Id == userId);
+
+            var bets = await _thermoBetContext.Entry(user)
+                .Collection(x => x.Bets)
+                .Query()
+                .Include(x => x.Market)
+                .Include(x => x.Selection)
+                .Include(x => x.Tournament)
+                .Where(x => x.Tournament.StartTimeUtc <= maxDate)
+                .ToListAsync();
+
+            return bets;
+        }
+
+        public async Task<IEnumerable<BetModel>> GetAllBets(int tournamentId)
+        {
+            var bets = await _thermoBetContext.Bets
+                .Include(b => b.Selection)
+                .Include(b => b.User)
+                .Include(b => b.Market)
+                .Where(b => b.Selection.Market.Tournament.Id == tournamentId)
+                .OrderBy(b => b.UserId)
+                .ThenBy(b => b.DateUtc)
+                .ToListAsync();
+
+            return bets;
+        }
     }
 }

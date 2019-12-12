@@ -17,7 +17,7 @@ namespace ThermoBet.Data.Services
             _thermoBetContext = thermoBetContext;
         }
 
-        public async Task<StatsModel> GetByUserIdAsync(int userId)
+        public async Task<StatsModel> GetByUserIdAsync(int userId, bool fixBugIssue = true)
         {
             var userBets = _thermoBetContext
                 .Bets
@@ -27,7 +27,7 @@ namespace ThermoBet.Data.Services
                 .SingleOrDefault(u => u.Id == userId)?
                 .GlobalPoints;
 
-            var winningsBets = userBets.Count(ub => ub.Market.WinningSelectionId == ub.Selection.Id);
+            var winningsBets = userBets.Count(ub => fixBugIssue ? (ub.Market.WinningSelectionId != ub.Selection.Id && ub.Market.WinningSelectionId.HasValue) : ub.Market.WinningSelectionId == ub.Selection.Id);
             var resultedBetCount = userBets.Count(ub => ub.Market.WinningSelectionId.HasValue);
 
             var userStats = new UserStatsModel
@@ -35,7 +35,7 @@ namespace ThermoBet.Data.Services
                 UserId = userId,
                 AllSwipesCount = userBets.Count(),
                 MonthlySwipesCount = userBets.Where(b => b.DateUtc.AddMonths(1) > DateTime.UtcNow).Count(),
-                SucceedSwipesCount = succeedSwipesCount??0,
+                SucceedSwipesCount = succeedSwipesCount ?? 0,
                 SucceedPercentage = resultedBetCount == 0 ? 0 : (int)((decimal)winningsBets / resultedBetCount * 100)
             };
 
@@ -52,7 +52,7 @@ namespace ThermoBet.Data.Services
                 .ToList();
 
             //Add 3 next positions
-            if(positions.Any(p => p.UserId == userId))
+            if (positions.Any(p => p.UserId == userId))
             {
                 var nextPositions = users
                 .Select((u, i) => new { User = u, Index = i })
@@ -91,34 +91,45 @@ namespace ThermoBet.Data.Services
             return stats;
         }
 
-        public async Task Compute(IEnumerable<int> selectionsIds)
+        public void ResetPoints()
         {
-            var selections = _thermoBetContext.Selections
-                .Where(s => selectionsIds.Contains(s.Id))
-                .Include(s => s.Market)
+            var users = _thermoBetContext.Users;
+            foreach(var user in users)
+            {
+                user.CurrentPoints = 0;
+                user.GlobalPoints = 0;
+            }
+            _thermoBetContext.SaveChanges();
+        }
+
+        public async Task Compute(int tournamentId, bool fixBugIssue = true)
+        {
+            var bets = _thermoBetContext.Bets
+                .Include(b => b.Selection)
+                .Include(b => b.Market)
+                .Include(b => b.User)
+                .Where(b => b.TournamentId == tournamentId)
+                .OrderBy(b => b.UserId)
+                .OrderBy(b => b.DateUtc)
                 .ToList();
 
-            foreach(var selection in selections)
+            foreach (var bet in bets)
             {
-                var bets = _thermoBetContext.Bets.Where(b => b.Selection == selection).Include(b => b.User).ToList();
-                foreach(var bet in bets)
+                var user = _thermoBetContext.Users.SingleOrDefault(u => u.Id == bet.User.Id);
+                if (user != null)
                 {
-                    var user = _thermoBetContext.Users.SingleOrDefault(u => u.Id == bet.User.Id);
-                    if(user != null)
+                    if (fixBugIssue ? (bet.Selection.Id != bet.Market.WinningSelectionId && bet.Market.WinningSelectionId.HasValue) : bet.Selection.Id == bet.Market.WinningSelectionId)
                     {
-                        if(bet.Selection.Id == selection.Market.WinningSelectionId)
-                        {
-                            //Winning bet
-                            user.CurrentPoints++;
-                        }
-                        else
-                        {
-                            user.CurrentPoints = 0;
-                        }
-
-                        if (user.GlobalPoints < user.CurrentPoints)
-                            user.GlobalPoints = user.CurrentPoints;
+                        //Winning bet
+                        user.CurrentPoints++;
                     }
+                    else
+                    {
+                        user.CurrentPoints = 0;
+                    }
+
+                    if (user.GlobalPoints < user.CurrentPoints)
+                        user.GlobalPoints = user.CurrentPoints;
                 }
             }
 

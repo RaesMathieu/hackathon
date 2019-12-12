@@ -11,4 +11,6 @@ public class Market
     public int? ChosenSelectionId { get; set; }
 
     public virtual ICollection<Selection> Selections { get; set; }
+
+    public DateTime? BetTime { get; set; }
 }
