@@ -29,6 +29,9 @@ namespace ThermoBet.Data
 
             entityTypeBuilder.HasMany(c => c.Markets)
                 .WithOne(c => c.Tournament);
+
+            entityTypeBuilder.HasMany(c => c.Winnables)
+                .WithOne(c => c.Tournament);
         }
     }
 }
