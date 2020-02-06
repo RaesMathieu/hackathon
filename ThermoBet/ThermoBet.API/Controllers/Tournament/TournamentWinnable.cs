@@ -5,4 +5,5 @@ public class TournamentWinnable
 {
     public int NbGoodAnswer { get; set; }
     public int AmountOfWinnings { get; set; }
+    public string TypeOfReward { get; set; }
 }

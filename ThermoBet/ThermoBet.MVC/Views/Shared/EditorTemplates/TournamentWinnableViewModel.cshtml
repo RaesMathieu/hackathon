@@ -1,0 +1,15 @@
+@model ThermoBet.MVC.Models.TournamentWinnableViewModel
+
+<input type="hidden" asp-for="Id" />
+<h5 class="card-header">
+    <div class="form-group">
+        <label for="Name">Nombre de bonne reponse</label>
+        <input asp-for="NbGoodAnswer" class="form-control">
+        <span asp-validation-for="NbGoodAnswer" class="text text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="StartTimeUtc">Montant du gain</label>
+        <input asp-for="AmountOfWinnings" class="form-control">
+        <span asp-validation-for="AmountOfWinnings" class="text text-danger"></span>
+    </div>
+</h5>

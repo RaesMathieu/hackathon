@@ -138,6 +138,24 @@ namespace ThermoBet.MVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public IActionResult RemoveWinnable(TournamentViewModel movie, string button)
+        {
+            ModelState.Clear();
+            movie.Winnables.RemoveAt(int.Parse(button));
+
+            return View("Edit", movie);
+        }
+
+        public IActionResult AddWinnable(TournamentViewModel movie)
+        {
+            ModelState.Clear();
+            movie.Winnables.Add(new TournamentWinnableViewModel());
+
+            return View("Edit", movie);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, TournamentViewModel movie, string button)
         {
             if (button == "Cancel")
