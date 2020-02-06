@@ -35,7 +35,7 @@ namespace ThermoBet.Data
                 .IsRequired(false);
 
             entityTypeBuilder.Property(c => c.Email)
-                .HasMaxLength(50)
+                .HasMaxLength(255)
                 .IsUnicode()
                 .IsRequired(false);
 
