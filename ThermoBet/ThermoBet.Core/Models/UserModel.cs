@@ -16,8 +16,20 @@ namespace ThermoBet.Core.Models
         public string HashPassword { get; set; }
 
         public bool IsAdmin { get; set; }
+
         public int GlobalPoints { get; set; }
+
         public int CurrentPoints { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string SecondName { get; set; }
+
+        public string Email { get; set; }
+
+        public string BetclicUserName { get; set; }
+
+
         public virtual ICollection<BetModel> Bets { get; set; }
 
         public virtual ICollection<LoginHistoryModel> LoginDate { get; set; }

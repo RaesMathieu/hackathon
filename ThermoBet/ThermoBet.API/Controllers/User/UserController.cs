@@ -47,7 +47,12 @@ namespace ThermoBet.API.Controllers
                     Id = user.Id,
                     UserName = user.Login,
                     Avatar = user.Avatar,
-                    Pseudo = user.Pseudo
+                    Pseudo = user.Pseudo,
+
+                    FirstName = user.FirstName,
+                    SecondName = user.SecondName,
+                    Email = user.Email,
+                    BetclicUserName = user.BetclicUserName
                 });
             }
             catch (Exception ex)
@@ -87,7 +92,12 @@ namespace ThermoBet.API.Controllers
                     Id = user.Id,
                     UserName = user.Login,
                     Avatar = user.Avatar,
-                    Pseudo = user.Pseudo
+                    Pseudo = user.Pseudo,
+
+                    FirstName = user.FirstName,
+                    SecondName = user.SecondName,
+                    Email = user.Email,
+                    BetclicUserName = user.BetclicUserName
                 });
             }
             catch (UserPseudoAlreadyUsedCoreException)
@@ -126,6 +136,16 @@ namespace ThermoBet.API.Controllers
                 if (!string.IsNullOrEmpty(userRequest.Pseudo))
                     user.Pseudo = userRequest.Pseudo;
 
+
+                if (!string.IsNullOrEmpty(userRequest.FirstName))
+                    user.FirstName = userRequest.FirstName;
+                if (!string.IsNullOrEmpty(userRequest.SecondName))
+                    user.SecondName = userRequest.SecondName;
+                if (!string.IsNullOrEmpty(userRequest.Email))
+                    user.Email = userRequest.Email;
+                if (!string.IsNullOrEmpty(userRequest.BetclicUserName))
+                    user.BetclicUserName = userRequest.BetclicUserName;
+
                 await _userService.UpdateAsync(user);
 
 
@@ -134,7 +154,12 @@ namespace ThermoBet.API.Controllers
                     Id = user.Id,
                     UserName = user.Login,
                     Avatar = user.Avatar,
-                    Pseudo = user.Pseudo
+                    Pseudo = user.Pseudo,
+
+                    FirstName = user.FirstName,
+                    SecondName = user.SecondName,
+                    Email = user.Email,
+                    BetclicUserName = user.BetclicUserName
                 });
             }
             catch (UserPseudoAlreadyUsedCoreException ex)

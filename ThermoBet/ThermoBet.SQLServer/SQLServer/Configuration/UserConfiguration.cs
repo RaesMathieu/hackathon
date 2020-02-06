@@ -29,6 +29,26 @@ namespace ThermoBet.Data
                 .IsUnicode()
                 .IsRequired(false);
 
+            entityTypeBuilder.Property(c => c.BetclicUserName)
+                .HasMaxLength(50)
+                .IsUnicode()
+                .IsRequired(false);
+
+            entityTypeBuilder.Property(c => c.Email)
+                .HasMaxLength(50)
+                .IsUnicode()
+                .IsRequired(false);
+
+            entityTypeBuilder.Property(c => c.FirstName)
+                .HasMaxLength(50)
+                .IsUnicode()
+                .IsRequired(false);
+
+            entityTypeBuilder.Property(c => c.SecondName)
+                .HasMaxLength(50)
+                .IsUnicode()
+                .IsRequired(false);
+
             entityTypeBuilder.Property(c => c.HashPassword)
                 .HasMaxLength(32)
                 .IsRequired(true);
