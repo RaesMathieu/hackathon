@@ -3,17 +3,20 @@ using AutoMapper;
 using ThermoBet.Core.Models;
 
 public class TournamentMapping : Profile
+{
+    public TournamentMapping()
     {
-        public TournamentMapping()
-        {
-            CreateMap<SelectionModel, Selection>()
+        CreateMap<TournamentWinnableModel, TournamentWinnable>()
             .ReverseMap();
 
-            CreateMap<MarketModel, Market>()
+        CreateMap<SelectionModel, Selection>()
             .ReverseMap();
 
-            CreateMap<TournamentModel, TournamentReponse>()
+        CreateMap<MarketModel, Market>()
             .ReverseMap();
 
-        }
+        CreateMap<TournamentModel, TournamentReponse>()
+            .ReverseMap();
+
     }
+}

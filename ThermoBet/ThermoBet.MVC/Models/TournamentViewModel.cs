@@ -22,6 +22,8 @@ namespace ThermoBet.MVC.Models
 
         public virtual List<MarketViewModel> Markets { get; set; }
 
+        public virtual List<TournamentWinnableViewModel> Winnables { get; set; }
+
         [Required]
         [DataType(DataType.DateTime)]
         [Display(Name = "Date de demarage du tournament", Prompt = "Date de demarage du tournament")]

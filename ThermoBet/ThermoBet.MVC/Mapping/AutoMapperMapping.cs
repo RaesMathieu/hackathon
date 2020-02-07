@@ -27,6 +27,9 @@ namespace ThermoBet.MVC.Mapping
             CreateMap<TournamentModel, ResultingTournamentViewModel>()
                 .ReverseMap();
 
+            CreateMap<TournamentWinnableModel, TournamentWinnableViewModel>()
+                .ReverseMap();
+
             CreateMap<UserModel, UserViewModel>()
                 .ReverseMap();
 

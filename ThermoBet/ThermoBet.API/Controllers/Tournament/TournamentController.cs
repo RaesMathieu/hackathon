@@ -98,6 +98,11 @@ namespace ThermoBet.API.Controllers
             {
                 var bets = tournamentFakes ? await _tournamentService.GetBetFakeTournamentsAsync(userId, tournament.StartTimeUtc) : await _tournamentService.GetBetAsync(userId, tournament.Id);
 
+                foreach (var winnable in tournament.Winnables)
+                {
+                    winnable.TypeOfReward = "freebets";
+                }
+
                 foreach (var market in tournament.Markets)
                 {
                     if (fixBugIssue)

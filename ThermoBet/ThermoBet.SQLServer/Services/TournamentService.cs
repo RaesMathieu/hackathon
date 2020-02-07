@@ -36,6 +36,7 @@ namespace ThermoBet.Data.Services
             var dateTime = await _configurationService.GetDateTimeUtcNow();
             var tounaments = await _thermoBetContext
                     .Tournaments
+                    .Include(x => x.Winnables)
                     .Include(x => x.Markets)
                         .ThenInclude(market => market.Selections)
                     .Where(x => x.StartTimeUtc <= dateTime && x.EndTimeUtc >= dateTime)
@@ -53,6 +54,7 @@ namespace ThermoBet.Data.Services
 
             var tournaments = await _thermoBetContext
                     .Tournaments
+                    .Include(x => x.Winnables)
                     .Include(x => x.Markets)
                         .ThenInclude(market => market.Selections)
                     .Where(x => x.StartTimeUtc <= dateTime)
@@ -80,6 +82,7 @@ namespace ThermoBet.Data.Services
         {
             var tounaments = await _thermoBetContext
                     .Tournaments
+                    .Include(x => x.Winnables)
                     .Include(x => x.Markets)
                         .ThenInclude(market => market.Selections)
                     .ToListAsync();
@@ -94,6 +97,7 @@ namespace ThermoBet.Data.Services
         {
             var tournament = await _thermoBetContext
                     .Tournaments
+                    .Include(x => x.Winnables)
                     .Include(x => x.Markets)
                         .ThenInclude(market => market.Selections)
                     .FirstAsync(x => x.Id == id);
