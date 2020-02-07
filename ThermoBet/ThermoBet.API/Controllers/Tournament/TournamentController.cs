@@ -126,6 +126,26 @@ namespace ThermoBet.API.Controllers
         }
 
         /// <summary>
+        /// Optin on a tournament
+        /// </summary>
+        /// <param name="tournamentCode">identifier of the tournament</param>
+        /// <returns></returns>
+        /// <response code="200">Bet success</response>
+        /// <response code="401">no logged</response>
+        /// <response code="404">Tournament was not found</response>
+        /// <response code="500">Failed with internal server error</response>
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(void))]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized, Type = typeof(void))]
+        [ProducesResponseType((int)HttpStatusCode.NotFound, Type = typeof(string))]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(string))]
+        [HttpPost("api/tournament/{tournamentCode}/Optin")]
+        [Authorize(Roles = "User")]
+        public ActionResult OptinAsync([FromRoute] string tournamentCode)
+        {
+            return Ok();
+        }
+
+        /// <summary>
         /// Bet on a tournament
         /// </summary>
         /// <param name="marketId">identifier of the market</param>
