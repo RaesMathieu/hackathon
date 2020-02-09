@@ -46,8 +46,8 @@ namespace ThermoBet.API.Controllers
         {
             try
             {
-                var userId = int.Parse(User.FindFirst(ClaimTypes.Sid)?.Value);
-                var tournaments = await _tournamentService.GetCurrentsAsync();
+                var userId = GetUserIdFromToken();
+                var tournaments = await _tournamentService.GetCurrentsAsync(userId);
                 var result = _mapper.Map<IEnumerable<TournamentReponse>>(tournaments);
 
                 await MapUserBetAndWinningSelection(userId, result);
@@ -77,8 +77,8 @@ namespace ThermoBet.API.Controllers
         {
             try
             {
-                var userId = int.Parse(User.FindFirst(ClaimTypes.Sid)?.Value);
-                var tournaments = await _tournamentService.GetAlreadyStartedAsync(number);
+                var userId = GetUserIdFromToken();
+                var tournaments = await _tournamentService.GetAlreadyStartedAsync(userId, number);
                 var result = _mapper.Map<IEnumerable<TournamentReponse>>(tournaments);
 
                 await MapUserBetAndWinningSelection(userId, result, true, true);
@@ -131,18 +131,35 @@ namespace ThermoBet.API.Controllers
         /// <param name="tournamentCode">identifier of the tournament</param>
         /// <returns></returns>
         /// <response code="200">Bet success</response>
-        /// <response code="401">no logged</response>
+        /// <response code="400">no logged</response>
+        /// <response code="408">No optin can be take on this tournament</response>
         /// <response code="404">Tournament was not found</response>
         /// <response code="500">Failed with internal server error</response>
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(void))]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized, Type = typeof(void))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(string))]
         [ProducesResponseType((int)HttpStatusCode.NotFound, Type = typeof(string))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(string))]
         [HttpPost("api/tournament/{tournamentCode}/Optin")]
         [Authorize(Roles = "User")]
-        public ActionResult OptinAsync([FromRoute] string tournamentCode)
+        public async Task<ActionResult> OptinAsync([FromRoute] string tournamentCode)
         {
-            return Ok();
+            //return Ok();
+            try
+            {
+                var userId = GetUserIdFromToken();
+                await _tournamentService.OptinAsync(userId, tournamentCode);
+
+                return Ok();
+            }
+            catch (FinishedTournamentCoreException ex)
+            {
+                return StatusCode((int)HttpStatusCode.BadRequest, "No optin can be take on this tournament.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.ToString());
+            }
         }
 
         /// <summary>
@@ -166,7 +183,7 @@ namespace ThermoBet.API.Controllers
         {
             try
             {
-                var userId = int.Parse(User.FindFirst(ClaimTypes.Sid)?.Value);
+                int userId = GetUserIdFromToken();
                 await _tournamentService.BetAsync(userId, tournamentId, marketId, selectionId);
 
                 return Ok();
@@ -179,6 +196,11 @@ namespace ThermoBet.API.Controllers
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.ToString());
             }
+        }
+
+        private int GetUserIdFromToken()
+        {
+            return int.Parse(User.FindFirst(ClaimTypes.Sid)?.Value);
         }
     }
 }

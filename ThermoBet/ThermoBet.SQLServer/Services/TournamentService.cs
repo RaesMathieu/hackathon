@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ThermoBet.Core.Models;
-using ThermoBet.Data;
 using System.Linq;
 using System;
 using ThermoBet.Core.Interfaces;
@@ -31,7 +30,7 @@ namespace ThermoBet.Data.Services
             await _thermoBetContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<TournamentModel>> GetCurrentsAsync()
+        public async Task<IEnumerable<TournamentModel>> GetCurrentsAsync(int userId)
         {
             var dateTime = await _configurationService.GetDateTimeUtcNow();
             var tounaments = await _thermoBetContext
@@ -40,6 +39,7 @@ namespace ThermoBet.Data.Services
                     .Include(x => x.Markets)
                         .ThenInclude(market => market.Selections)
                     .Where(x => x.StartTimeUtc <= dateTime && x.EndTimeUtc >= dateTime)
+                    .Where(x => x.OptinUsers.Any(y => y.UserId == userId))
                     .ToListAsync();
 
             foreach (var tournament in tounaments)
@@ -48,7 +48,7 @@ namespace ThermoBet.Data.Services
             return tounaments;
         }
 
-        public async Task<IEnumerable<TournamentModel>> GetAlreadyStartedAsync(int lastNumber)
+        public async Task<IEnumerable<TournamentModel>> GetAlreadyStartedAsync(int userId, int lastNumber)
         {
             var dateTime = await _configurationService.GetDateTimeUtcNow();
 
@@ -58,6 +58,7 @@ namespace ThermoBet.Data.Services
                     .Include(x => x.Markets)
                         .ThenInclude(market => market.Selections)
                     .Where(x => x.StartTimeUtc <= dateTime)
+                    .Where(x => x.OptinUsers.Any(y => y.UserId == userId))
                     .OrderByDescending(x => x.StartTimeUtc)
                     .Take(lastNumber == 2 ? 10 : lastNumber)
                     .ToListAsync();
@@ -134,7 +135,7 @@ namespace ThermoBet.Data.Services
                 .Where(x => x.Tournament.Id == tournamentId && x.Market.Id == marketId)
                 .SingleOrDefaultAsync();
 
-            var tournament = await _thermoBetContext.Tournaments.SingleAsync(x => x.Id == tournamentId);
+            var tournament = await _thermoBetContext.Tournaments.SingleAsync(x => x.Id == tournamentId && x.OptinUsers.Any(y => y.UserId == userId));
             if (!(tournament.StartTimeUtc < dateTime && tournament.EndTimeUtc > dateTime))
                 throw new FinishedTournamentCoreException();
 
@@ -158,6 +159,37 @@ namespace ThermoBet.Data.Services
 
             await _thermoBetContext.SaveChangesAsync();
         }
+
+        public async Task OptinAsync(int userId, string tournamentCode)
+        {
+            var dateTime = await _configurationService.GetDateTimeUtcNow();
+            var user = await _thermoBetContext.
+                    Users.SingleAsync(x => x.Id == userId);
+
+            var optinTournament = await _thermoBetContext.Entry(user)
+                .Collection(x => x.Bets)
+                .Query()
+                .Where(x => x.Tournament.Code == tournamentCode)
+                .SingleOrDefaultAsync();
+
+            var tournament = await _thermoBetContext.Tournaments.SingleAsync(x => x.Code.ToLower() == tournamentCode.ToLower());
+            if (!(tournament.StartTimeUtc < dateTime && tournament.EndTimeUtc > dateTime))
+                throw new FinishedTournamentCoreException();
+
+            if (optinTournament == null)
+            {
+                await _thermoBetContext.TournamentUserOptins.AddAsync(new TournamentUserOptinModel
+                {
+                    DateUtc = dateTime,
+                    TournamentId = tournament.Id,
+                    User = user,
+                    Tournament = tournament
+                });
+            }
+
+            await _thermoBetContext.SaveChangesAsync();
+        }
+
 
         public async Task<IEnumerable<BetModel>> GetBetAsync(int userId, int tournamentId)
         {
