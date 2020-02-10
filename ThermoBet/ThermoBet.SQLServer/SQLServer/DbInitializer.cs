@@ -11,8 +11,8 @@ namespace ThermoBet.Data
     {
         public static void Initialize(ThermoBetContext context)
         {
-            // Database creation if needed
-            context.Database.EnsureCreated();
+            // Database creation/Migration if needed
+            context.Database.Migrate();
 
             //if (context.Tournaments.Any())
             //{
