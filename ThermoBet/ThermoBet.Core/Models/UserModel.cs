@@ -32,6 +32,8 @@ namespace ThermoBet.Core.Models
 
         public virtual ICollection<BetModel> Bets { get; set; }
 
+        public virtual ICollection<TournamentUserOptinModel> OptinTournament { get; set; }
+
         public virtual ICollection<LoginHistoryModel> LoginDate { get; set; }
     }
 }

@@ -16,6 +16,12 @@ namespace ThermoBet.MVC.Models
 
         public string Name { get; set; }
 
+        [Required]
+        [MinLength(5)]
+        [MaxLength(50)]
+        [Display(Name = "Code du tournament", Prompt = "Code du tournament")]
+        public string Code { get; set; }
+
         [MaxLength(2500)]
         [Display(Name = "Description du tournament", Prompt = "Description du tournament")]
         public string Description { get; set; }

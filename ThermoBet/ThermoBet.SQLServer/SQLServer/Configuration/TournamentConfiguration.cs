@@ -21,6 +21,10 @@ namespace ThermoBet.Data
                 .HasMaxLength(250)
                 .IsRequired(true);
 
+            entityTypeBuilder.Property(c => c.Code)
+                .HasMaxLength(50)
+                .IsRequired(true);
+
             entityTypeBuilder.Property(c => c.EndTimeUtc)
                 .IsRequired(true);
 

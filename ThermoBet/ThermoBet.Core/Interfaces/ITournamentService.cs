@@ -6,7 +6,7 @@ using ThermoBet.Core.Models;
 
 public interface ITournamentService
 {
-    Task<IEnumerable<TournamentModel>> GetCurrentsAsync();
+    Task<IEnumerable<TournamentModel>> GetCurrentsAsync(int userId);
 
     Task<IEnumerable<TournamentModel>> GetAllAsync();
 
@@ -18,9 +18,11 @@ public interface ITournamentService
 
     Task BetAsync(int userId, int tournamentId, int marketId, int selectionId);
 
+    Task OptinAsync(int userId, string tournamentCode);
+
     Task<IEnumerable<BetModel>> GetBetAsync(int userId, int tournamentId);
 
-    Task<IEnumerable<TournamentModel>> GetAlreadyStartedAsync(int lastNumber);
+    Task<IEnumerable<TournamentModel>> GetAlreadyStartedAsync(int userId, int lastNumber);
 
     Task<IEnumerable<BetModel>> GetAllBets(int tournamentId);
 
