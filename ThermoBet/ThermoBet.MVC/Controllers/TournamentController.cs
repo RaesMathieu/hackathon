@@ -83,6 +83,10 @@ namespace ThermoBet.MVC.Controllers
                             }
                         }
                     }
+                },
+                Winnables = new List<Core.Models.TournamentWinnableModel>
+                {
+                    new Core.Models.TournamentWinnableModel()
                 }
             };
 
