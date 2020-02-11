@@ -81,7 +81,7 @@ namespace ThermoBet.API.Controllers
                 var tournaments = await _tournamentService.GetAlreadyStartedAsync(userId, number);
                 var result = _mapper.Map<IEnumerable<TournamentReponse>>(tournaments);
 
-                await MapUserBetAndWinningSelection(userId, result, true, true);
+                await MapUserBetAndWinningSelection(userId, result);
 
                 return Ok(result);
             }
@@ -91,37 +91,18 @@ namespace ThermoBet.API.Controllers
             }
         }
 
-        private async Task MapUserBetAndWinningSelection(int userId, IEnumerable<TournamentReponse> result, bool fixBugIssue = false, bool tournamentFakes = false)
+        private async Task MapUserBetAndWinningSelection(int userId, IEnumerable<TournamentReponse> result)
         {
             // set user choice.
             foreach (var tournament in result)
             {
-                var bets = tournamentFakes ? await _tournamentService.GetBetFakeTournamentsAsync(userId, tournament.StartTimeUtc) : await _tournamentService.GetBetAsync(userId, tournament.Id);
+                var bets = await _tournamentService.GetBetAsync(userId, tournament.Id);
 
                 foreach (var winnable in tournament.Winnables)
-                {
                     winnable.TypeOfReward = "freebets";
-                }
 
                 foreach (var market in tournament.Markets)
-                {
-                    if (fixBugIssue)
-                    {
-                        var bet = bets.FirstOrDefault(s => s.Market.Id == market.Id);
-                        var selectionId = bet?.Selection?.Id;
-                        market.ChosenSelectionId = selectionId == null ? null : market.Selections.FirstOrDefault(s => s.Id != selectionId)?.Id;
-                        market.BetTime = bet?.DateUtc;
-                    }
-                    else
-                    {
-                        market.ChosenSelectionId = bets.FirstOrDefault(s => s.Market.Id == market.Id)?.Selection?.Id;
-                    }
-                }
-
-                if (fixBugIssue)
-                {
-                    tournament.Markets = tournament.Markets.OrderByDescending(m => m.BetTime).ToList();
-                }
+                    market.ChosenSelectionId = bets.FirstOrDefault(s => s.Market.Id == market.Id)?.Selection?.Id;
             }
         }
 
