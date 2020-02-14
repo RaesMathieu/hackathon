@@ -32,13 +32,21 @@ namespace ThermoBet.MVC.Models
 
         [Required]
         [DataType(DataType.DateTime)]
+        //[DisplayFormat(DataFormatString = "{0: dd/MM/yy hh:mm}", ApplyFormatInEditMode = true)]
         [Display(Name = "Date de demarage du tournament", Prompt = "Date de demarage du tournament")]
         public DateTime StartTimeUtc { get; set; }
 
         [Required]
         [DataType(DataType.DateTime)]
+        //[DisplayFormat(DataFormatString = "{0: dd/MM/yy hh:mm}", ApplyFormatInEditMode = true)]
         [Display(Name = "Date de fin du tournament", Prompt = "Date de fin du tournament")]
 
         public DateTime EndTimeUtc { get; set; }
+
+        [Required]
+        [DataType(DataType.DateTime)]
+        //[DisplayFormat(DataFormatString = "{0: dd/MM/yy hh:mm}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Date d'affichage des resultat du tournament", Prompt = "Date d'affichage des resultat du tournament")]
+        public DateTime ResultTimeUtc { get; set; }
     }
 }

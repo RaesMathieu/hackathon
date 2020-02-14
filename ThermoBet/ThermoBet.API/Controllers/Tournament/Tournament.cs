@@ -10,4 +10,5 @@ public class TournamentReponse
     public virtual ICollection<TournamentWinnable> Winnables { get; set; }
     public DateTime StartTimeUtc { get; set; }
     public DateTime EndTimeUtc { get; set; }
+    public DateTime ResultTimeUtc { get; set; }
 }
