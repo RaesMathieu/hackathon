@@ -16,5 +16,7 @@ namespace ThermoBet.Core.Models
         public virtual ICollection<TournamentWinnableModel> Winnables { get; set; }
         public DateTime StartTimeUtc { get; set; }
         public DateTime EndTimeUtc { get; set; }
+        public DateTime ResultTimeUtc { get; set; }
+
     }
 }

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 using ThermoBet.Core.Models;
 
 namespace ThermoBet.Data
@@ -30,6 +31,9 @@ namespace ThermoBet.Data
 
             entityTypeBuilder.Property(c => c.StartTimeUtc)
                 .IsRequired(true);
+
+            entityTypeBuilder.Property(c => c.ResultTimeUtc)
+                .HasDefaultValue<DateTime>(DateTime.MaxValue);
 
             entityTypeBuilder.HasMany(c => c.Markets)
                 .WithOne(c => c.Tournament);

@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ThermoBet.Data;
 
 namespace ThermoBet.SQLServer.Migrations
 {
     [DbContext(typeof(ThermoBetContext))]
-    partial class ThermoBetContextModelSnapshot : ModelSnapshot
+    [Migration("20200214125037_AddResultTimeUtcOnTournament")]
+    partial class AddResultTimeUtcOnTournament
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
