@@ -229,5 +229,10 @@ namespace ThermoBet.Data.Services
 
             return bets;
         }
+
+        public IQueryable<TournamentModel> GetAllTournamentAsync()
+        {
+            return _thermoBetContext.Tournaments;
+        }
     }
 }

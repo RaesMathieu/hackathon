@@ -16,11 +16,8 @@
             <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Login</th>
-                    <th>Pseudo</th>
-                    <th>Avatar</th>
-                    <th>GlobalPoints</th>
-                    <th>CurrentPoints</th>
+                    <th>betclic UserName</th>
+                    <th>Email</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -32,7 +29,7 @@
         $(document).ready(function ()
         {
             $("#example").DataTable({
-                "order": [2, 'desc'],
+                "order": [1, 'desc'],
                 "processing": true, // for show progress bar
                 "serverSide": true, // for process server side
                 "filter": true, // this is for disable filter (search box)
@@ -48,21 +45,18 @@
                     "visible": false,
                     "searchable": false
                 },{
-                    "targets": [6],
+                    "targets": [3],
                     "orderable": false,
                     "searchable": false
                 }],
                 "columns": [
                     { "data": "id", "name": "Id", "autoWidth": true },
-                    { "data": "login", "name": "Login", "autoWidth": true },
-                    { "data": "pseudo", "name": "Pseudo", "autoWidth": true },
-                    { "data": "avatar", "name": "Avatar", "autoWidth": true },
-                    { "data": "globalPoints", "name": "GlobalPoints", "autoWidth": true },
-                    { "data": "currentPoints", "name": "CurrentPoints", "autoWidth": true },
+                    { "data": "betclicUserName", "name": "BetclicUserName", "autoWidth": true },
+                    { "data": "email", "name": "Email", "autoWidth": true },
                     {
                         "render": function (data, type, full, meta)
                         {
-                            return '<a class="btn btn-info" href="/User/Edit/' + full.id + '">Edit</a>';
+                            return '<a class="btn btn-primary" href="/User/Edit/' + full.id + '">Edit</a>';
                         }
                     }
                 ]
