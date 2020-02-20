@@ -31,25 +31,21 @@ namespace ThermoBet.MVC.Models
         public int CurrentPoints { get; set; }
 
         [Required]
-        [MinLength(1)]
         [MaxLength(50)]
         [Display(Name = "FirstName", Prompt = "FirstName")]
         public string FirstName { get; set; }
 
         [Required]
-        [MinLength(1)]
         [MaxLength(50)]
         [Display(Name = "SecondName", Prompt = "SecondName")]
         public string SecondName { get; set; }
 
         [Required]
-        [MinLength(1)]
         [MaxLength(255)]
         [Display(Name = "Email", Prompt = "Email")]
         public string Email { get; set; }
 
         [Required]
-        [MinLength(1)]
         [MaxLength(50)]
         [Display(Name = "BetclicUserName", Prompt = "BetclicUserName")]
         public string BetclicUserName { get; set; }
