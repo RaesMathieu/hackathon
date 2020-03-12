@@ -35,7 +35,7 @@
                 "filter": true, // this is for disable filter (search box)
                 "orderMulti": false, // for disable multiple column at once
                 "ajax": {
-                    "url": "/User/LoadData",
+                    "url": "User/LoadData",
                     "type": "POST",
                     "datatype": "json"
                 },
@@ -56,7 +56,7 @@
                     {
                         "render": function (data, type, full, meta)
                         {
-                            return '<a class="btn btn-primary" href="/User/Edit/' + full.id + '">Edit</a>';
+                            return '<a class="btn btn-primary" href="User/Edit/' + full.id + '">Edit</a>';
                         }
                     }
                 ]

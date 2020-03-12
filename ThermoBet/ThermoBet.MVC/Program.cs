@@ -8,6 +8,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
+using Amazon.Lambda.Core;
+using Amazon.Lambda.APIGatewayEvents;
+using Amazon.Lambda.RuntimeSupport;
+using Amazon.Lambda.Serialization.Json;
+
 namespace ThermoBet.MVC
 {
     public class Program
@@ -16,11 +21,22 @@ namespace ThermoBet.MVC
         {
             //CreateHostBuilder(args).Build().Run();
 
-            var host = CreateHostBuilder(args).Build();
-
-            CreateDbIfNotExists(host);
-            host.Run();
-
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("AWS_LAMBDA_FUNCTION_NAME")))
+            {
+                var host = CreateHostBuilder(args).Build();
+                //CreateDbIfNotExists(host);
+                host.Run();
+            }
+            else
+            {
+                var lambdaEntry = new LambdaEntryPoint();
+                var functionHandler = (Func<APIGatewayProxyRequest, ILambdaContext, Task<APIGatewayProxyResponse>>)(lambdaEntry.FunctionHandlerAsync);
+                using (var handlerWrapper = HandlerWrapper.GetHandlerWrapper(functionHandler, new JsonSerializer()))
+                using (var bootstrap = new LambdaBootstrap(handlerWrapper))
+                {
+                    bootstrap.RunAsync().Wait();
+                }
+            }
         }
 
 

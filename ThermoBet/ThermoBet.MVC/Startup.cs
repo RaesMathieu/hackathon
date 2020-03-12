@@ -16,7 +16,9 @@ using AutoMapper;
 using System.Reflection;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Extensions.Logging;
 
 namespace ThermoBet.MVC
 {
@@ -32,6 +34,9 @@ namespace ThermoBet.MVC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDataProtection()
+                .PersistKeysToAWSSystemsManager("/ThermoBet.MVC/DataProtection");
+
             Bootstrap.Init.ConfigureServices(services, Configuration);
 
             services.AddAutoMapper(Assembly.GetAssembly(this.GetType()));
@@ -76,6 +81,21 @@ namespace ThermoBet.MVC
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            CreateDbIfNotExists(app.ApplicationServices);
+        }
+
+        private static void CreateDbIfNotExists(IServiceProvider services)
+        {
+            try
+            {
+                ThermoBet.Bootstrap.Init.CreateDbIfNotExists(services);
+            }
+            catch (Exception ex)
+            {
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "An error occurred creating the DB.");
+            }
         }
     }
 }

@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UseNETCoreGenerator>true</UseNETCoreGenerator>
+    <AWSProjectType>Lambda</AWSProjectType>
+    <AssemblyName>bootstrap</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+      <PackageReference Include="Amazon.AspNetCore.DataProtection.SSM" Version="1.1.0" />
+      <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="4.1.0" />
+      <PackageReference Include="Amazon.Lambda.RuntimeSupport" Version="1.1.0" />
       <PackageReference Include="AutoMapper" Version="9.0.0" />
       <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.0">

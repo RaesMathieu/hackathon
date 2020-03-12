@@ -24,7 +24,7 @@
             </thead>
         </table>
         <hr />
-        <a class="btn btn-success float-right" href="/Tournament/Add">Ajouter</a>'
+        <a class="btn btn-success float-right" href="Tournament/Add">Ajouter</a>'
 
     </div>
 </div>
@@ -38,7 +38,7 @@
                 "filter": true, // this is for disable filter (search box)
                 "orderMulti": false, // for disable multiple column at once
                 "ajax": {
-                    "url": "/Tournament/LoadData",
+                    "url": "Tournament/LoadData",
                     "type": "POST",
                     "datatype": "json"
                 },
@@ -60,7 +60,7 @@
                     {
                         "render": function (data, type, full, meta)
                         {
-                            return '<a class="btn btn-primary" href="/Tournament/Edit/' + full.id + '">Edit</a> | <a class="btn btn-warning" href="/Resulting/Edit/' + full.id + '">Result</a> | <a class="btn btn-info" href="/Resulting/Users/' + full.id + '">Users</a>';
+                            return '<a class="btn btn-primary" href="Tournament/Edit/' + full.id + '">Edit</a> | <a class="btn btn-warning" href="Resulting/Edit/' + full.id + '">Result</a> | <a class="btn btn-info" href="Resulting/Users/' + full.id + '">Users</a>';
                         }
                     }
                 ]
